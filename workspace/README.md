@@ -4,7 +4,7 @@ An example of architecture based on microservices for building a simple HelloWor
 
 Scenario is obvious: you input a HelloWorld message and you submit it. All the HelloWorld messages are listed on the table.
 
-![Screenshot](./images/helloworldscreenshot.png)
+![Screenshot](../images/helloworldapplication.png)
 
 The architecture of this application is composed of five microservices.
 
