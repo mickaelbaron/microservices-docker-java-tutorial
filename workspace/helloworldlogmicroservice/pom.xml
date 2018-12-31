@@ -6,8 +6,8 @@
 	<artifactId>helloworldlogmicroservice</artifactId>
 	<version>1.0-SNAPSHOT</version>
 	<properties>
-		<rabbitmq.version>3.6.0</rabbitmq.version>
-		<gson.version>2.5</gson.version>
+		<rabbitmq.version>5.5.1</rabbitmq.version>
+		<gson.version>2.8.5</gson.version>
 
 		<!-- Java version we use -->
 		<maven.compiler.source>1.8</maven.compiler.source>
