@@ -15,7 +15,26 @@
 		<maven.compiler.target>1.8</maven.compiler.target>
 	</properties>
 	<dependencies>
-		<!-- To complete -->
+		<dependency>
+			<groupId>com.kumuluz.ee</groupId>
+			<artifactId>kumuluzee-core</artifactId>
+			<version>${kumuluzee.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.kumuluz.ee</groupId>
+			<artifactId>kumuluzee-servlet-jetty</artifactId>
+			<version>${kumuluzee.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.kumuluz.ee</groupId>
+			<artifactId>kumuluzee-jax-rs-jersey</artifactId>
+			<version>${kumuluzee.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.kumuluz.ee</groupId>
+			<artifactId>kumuluzee-cdi-weld</artifactId>
+			<version>${kumuluzee.version}</version>
+		</dependency>
 		<dependency>
 			<groupId>redis.clients</groupId>
 			<artifactId>jedis</artifactId>
@@ -44,7 +63,20 @@
 	</dependencies>
 	<build>
 		<plugins>
-			<!-- To complete -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-dependency-plugin</artifactId>
+				<version>2.10</version>
+				<executions>
+					<execution>
+						<id>copy-dependencies</id>
+						<phase>package</phase>
+						<goals>
+							<goal>copy-dependencies</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
 		</plugins>
 	</build>
 </project>

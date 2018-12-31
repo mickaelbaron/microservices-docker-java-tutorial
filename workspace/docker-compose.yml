@@ -1,0 +1,55 @@
+version: '3'
+
+services:
+  redis:
+    image: redis:latest
+    command: redis-server --appendonly yes
+    volumes: 
+      - ./data:/data
+    networks:
+      - helloworldnet
+
+  rabbitmq:
+    image: rabbitmq:management
+    hostname: my-rabbit
+    ports:
+      - 5672:5672
+      - 15672:15672
+    networks:
+      - helloworldnet
+ 
+  rest:
+    build: helloworldrestmicroservice/
+    image: mickaelbaron/helloworldrestmicroservice:latest
+    depends_on: 
+      - rabbitmq
+      - redis
+    ports:
+      - 8080:8080
+    environment:
+      REDIS_HOST: tcp://redis:6379
+      RABBITMQ_HOST: rabbitmq
+    networks:
+      - helloworldnet
+
+  web:
+    build: helloworldwebmicroservice
+    image: mickaelbaron/helloworldwebmicroservice:latest
+    ports:
+      - 80:8080
+    networks:
+      - helloworldnet
+
+  log:
+    build: helloworldlogmicroservice/
+    image: mickaelbaron/helloworldlogmicroservice:latest
+    depends_on:
+      - rabbitmq
+    command: rabbitmq
+    networks:
+      - helloworldnet
+
+networks:
+  helloworldnet:
+    external:
+      name: helloworldnetwork

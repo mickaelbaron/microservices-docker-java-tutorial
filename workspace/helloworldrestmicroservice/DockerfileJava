@@ -1,0 +1,9 @@
+FROM java:openjdk-8-jdk
+LABEL MAINTAINER="Mickael BARON"
+
+WORKDIR /work
+ADD ["target/classes", "/work/target/classes"]
+ADD ["target/dependency", "/work/target/dependency"]
+
+EXPOSE 8080
+ENTRYPOINT ["java", "-cp", "target/classes:target/dependency/*", "com.kumuluz.ee.EeApplication"]
