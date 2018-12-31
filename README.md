@@ -1,6 +1,6 @@
 # JavaMicroservices Tutoriel
 
-L'objectif de cette série d'exercices est d'apprendre à construire une application en respectant une architecture à base de microservices.
+L'objectif de cette série d'exercices est d'apprendre à construire une application en respectant une architecture à base de microservices en se focalisant sur le langage Java.
 
 Nous utiliserons pour cela plusieurs technologies :
 
