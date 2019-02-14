@@ -68,7 +68,7 @@ Successfully built e04b1b2fc0aa
 Successfully tagged mickaelbaron/helloworldrestmicroservice:latest
 ```
 
-Remarquer le téléchargement des dépendances Java (les fichiers Jar) réalisées après la commande `$ mvn dependendy:go-offline`.
+Remarquer le téléchargement des dépendances Java (les fichiers Jar) réalisées après la commande `$ mvn dependency:go-offline`.
 
 * S'assurer que l'image a été correctement construite en exécutant la ligne de commande suivante.
 
@@ -85,6 +85,7 @@ Vous remarquerez que l'image *java* est disponible puisque l'image que nous veno
 * Vérifions que les dépendances Java (les fichiers Jar) ont correctement été stockées dans les couches de notre image. Exécuter la ligne de commande suivante.
 
 ```bash
+$ docker history mickaelbaron/helloworldrestmicroservice
 IMAGE               CREATED             CREATED BY                                      SIZE                COMMENT
 e04b1b2fc0aa        13 minutes ago      /bin/sh -c #(nop)  ENTRYPOINT ["java" "-cp" …   0B
 2dc65427ed4f        13 minutes ago      /bin/sh -c #(nop)  EXPOSE 8080                  0B
