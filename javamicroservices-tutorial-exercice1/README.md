@@ -118,7 +118,7 @@ java -cp 'target/classes:target/dependency/*' com.kumuluz.ee.EeApplication
 </dependency>
 ```
 
-Votre microservice **Rest** est désormais opérationnelle et l'instruction pour la démarrer fonctionne.
+Votre microservice **Rest** est désormais opérationnel et l'instruction pour la démarrer fonctionne.
 
 * Arrêtez l'exécution du programme en faisant simplement un **CTRL-C**.
 
