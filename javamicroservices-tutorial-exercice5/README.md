@@ -14,14 +14,14 @@
 
 * Créer un réseau Docker appelé *helloworldnetwork* en exécutant la ligne de commande suivante.
 
-```bash
+```console
 $ docker network create helloworldnetwork
 14109f963b014b322fbbd3094af191517cd95d42244115d491e9abf8063d1d16
 ```
 
 * Afficher la liste des réseaux Docker afin d'assurer que votre réseau précédent créé à bien été créé.
 
-```bash
+```console
 $ docker network ls
 NETWORK ID          NAME                DRIVER              SCOPE
 61f6b732863b        bridge              bridge              local
@@ -36,7 +36,7 @@ Vous remarquerez que des réseaux Docker sont déjà existants (*bridge*, *host*
 
 * Nous allons connecter le conteneur *redis* précédemment créé au réseau Docker *helloworldnetwork*.
 
-```bash
+```console
 docker network connect helloworldnetwork redis
 ```
 
@@ -44,7 +44,7 @@ docker network connect helloworldnetwork redis
 
 1. Afficher les informations du conteneur *redis* via l'option `inspect`.
 
-```bash
+```console
 $ docker inspect redis
 ...
 "Networks": {
@@ -86,7 +86,7 @@ $ docker inspect redis
 
 2. Afficher les informations du réseau Docker *helloworldnetwork*.
 
-```bash
+```console
 $ docker network inspect helloworldnetwork
 [
     {
@@ -130,7 +130,7 @@ $ docker network inspect helloworldnetwork
 
 * Créer un conteneur pour le microservice **Rest** en exécutant la ligne de commande suivante.
 
-```bash
+```console
 $ docker run --name rest -p 8080:8080 -d --network helloworldnetwork --env REDIS_HOST=tcp://redis:6379 mickaelbaron/helloworldrestmicroservice
 28eba01ed267a1618019df724cbc7686b574c2f73b0575ea1352f58cdaa4afc5
 ```
@@ -139,7 +139,7 @@ Cette instruction crée un conteneur Docker appelé **Rest** (`--name rest`), do
 
 * Assurons-nous que les deux conteneurs *redis* et *rest* sont connectés dans le réseau Docker *helloworldnetwork*.
 
-```bash
+```console
 $ docker network inspect helloworldnetwork
 ...
         "Containers": {
@@ -163,7 +163,7 @@ $ docker network inspect helloworldnetwork
 
 * Vérifions également que depuis le conteneur *rest* le dialogue peut s'opérer via le conteneur *redis*, exécuter la ligne de commande suivante.
 
-```bash
+```console
 $ docker exec -it rest /bin/sh -c 'ping redis'
 PING redis (172.19.0.2): 56 data bytes
 64 bytes from 172.19.0.2: icmp_seq=0 ttl=64 time=0.115 ms
@@ -174,7 +174,7 @@ PING redis (172.19.0.2): 56 data bytes
 
 * Il nous reste plus qu'à tester le service web contenu dans le conteneur *rest*. Exécuter les deux lignes de commandes suivantes afin de poster un message « HelloWorld » et de récupérer les messages « HelloWorld » envoyés.
 
-```bash
+```console
 # Création d'un message « HelloWorld » à partir d'un contenu JSON
 $ curl -H "Content-Type: application/json" -X POST -d '{"message":"Mon HelloWorld"}' http://localhost:8080/helloworld
 

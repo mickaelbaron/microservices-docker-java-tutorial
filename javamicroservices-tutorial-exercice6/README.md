@@ -151,7 +151,7 @@ $ curl http://localhost:8080/helloworld
 
 * Afficher le contenu des logs du conteneur *log* en exécutant la commande suivante.
 
-```bash
+```console
 $ docker logs log
 [x] Received '{"rid":6,"message":"Mon HelloWorld avec presque tous les microservices","startDate":"Sun Dec 30 21:10:09 UTC 2018"}'
 ```
