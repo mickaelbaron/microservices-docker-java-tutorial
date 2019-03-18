@@ -18,7 +18,7 @@ Le code du projet Java est assez commun. Un package *service* pour la gestion de
 
 * Examiner les différents packages et classes. Vous remarquerez que le projet contient des erreurs de compilation dues à l'absence des dépendances vers KumuluzEE et indirectement vers JERSEY.
 
-* Ouvrir le fichier *pom.xml* et complétez le contenu de la balise `<dependencies>` par les dépendances suivantes.
+* Ouvrir le fichier *pom.xml* et compléter le contenu de la balise `<dependencies>` par les dépendances suivantes.
 
 ```xml
 ...
@@ -61,13 +61,13 @@ Désormais le projet ne contient plus d'erreurs et peut être compilé en totali
 
 * Pour exécuter le projet depuis Eclipse, créer une configuration d'exécution que vous appellerez *HelloworldRESTMicroservice* et dont la classe principale (Main class) sera `com.kumuluz.ee.EeApplication` puis faire **Run**.
 
-Votre programme s'exécute par l'intermédiaire de KumuluzEE. Pour tester nous pourrions utiliser l'adresse <http://localhost:8080/helloworld> mais comme le serveur Redis n'est pas encore opérationnel nous ne pourrons pas à cet instant aller plus loin dans les tests.
+Votre programme s'exécute par l'intermédiaire de KumuluzEE. Pour tester nous pourrions utiliser l'adresse <http://localhost:8080/helloworld>, mais comme le serveur Redis n'est pas encore opérationnel nous ne pourrons pas à cet instant aller plus loin dans les tests.
 
-* Avant de continuer, arrêtez l'exécution du programme depuis le bouton **Terminate** (bouton rouge) de la console Eclipse.
+* Avant de continuer, arrêter l'exécution du programme depuis le bouton **Terminate** (bouton rouge) de la console Eclipse.
 
 Notre programme Java doit s'exécuter en ligne de commande et non pas depuis Eclipse quand il sera exécuté depuis un conteneur Docker. Nous allons donc réaliser une dernière modification sur le fichier *pom.xml* afin de préparer le terrain. Nous allons préciser à Maven que l'on souhaite que toutes les dépendances soient présentes dans le répertoire *target* du projet.
 
-* Ouvrir donc le fichier *pom.xml*.
+* Ouvrir le fichier *pom.xml*.
 
 * Ajouter dans la balise `<plugins>` le plugin *maven-dependency-plugin* comme montré sur le code suivant.
 
@@ -92,11 +92,11 @@ Notre programme Java doit s'exécuter en ligne de commande et non pas depuis Ecl
 </project>
 ```
 
-* Depuis Eclipse, exécuter la configuration d'exécution appelée *alldependencies (package)*. Si vous rencontrez des soucis avec l'intégration Maven sous Eclipse, exécuter la ligne de commande suivante à la racine de votre projet `$ mvn package`. Toutes les dépendances seront copiées par le plugin *maven-dependency-plugin* et localisées dans le répertoire *helloworldrestmicroservice/target/dependency*.
+* Depuis Eclipse, exécuter la configuration d'exécution appelée *all dependencies (package)*. Si vous rencontrez des soucis avec l'intégration Maven sous Eclipse, exécuter la ligne de commande suivante à la racine de votre projet `$ mvn package`. Toutes les dépendances seront copiées par le plugin *maven-dependency-plugin* et localisées dans le répertoire *helloworldrestmicroservice/target/dependency*.
 
 * Ouvrir une invite de commande à la racine du projet *helloworldrestmicroservice*, puis exécuter la ligne de commande suivante.
 
-```bash
+```console
 java -cp 'target/classes:target/dependency/*' com.kumuluz.ee.EeApplication
 2018-12-28 18:56:55.562 INFO -- com.kumuluz.ee.configuration.sources.FileConfigurationSource -- Unable to load configuration from file. No configuration files were found.
 2018-12-28 18:56:55.580 INFO -- com.kumuluz.ee.EeApplication -- Initialized configuration source: EnvironmentConfigurationSource
@@ -120,9 +120,9 @@ java -cp 'target/classes:target/dependency/*' com.kumuluz.ee.EeApplication
 
 Votre microservice **Rest** est désormais opérationnel et l'instruction pour la démarrer fonctionne.
 
-* Arrêtez l'exécution du programme en faisant simplement un **CTRL-C**.
+* Arrêter l'exécution du programme en faisant simplement un **CTRL-C**.
 
-* Avant de passer à l'exercice suivant qui nous permettra de disposer d'un serveur Redis, essayons de comprendre comment la communication est réalisée entre le microservice **Rest** et le serveur Redis. Ouvrir la classe `fr.mickaelbaron.helloworldrestmicroservice.dao.redis.JedisFactory` et examinez la méthode `String getRedisURI()`.
+* Avant de passer à l'exercice suivant qui nous permettra de disposer d'un serveur Redis, essayons de comprendre comment la communication est réalisée entre le microservice **Rest** et le serveur Redis. Ouvrir la classe `fr.mickaelbaron.helloworldrestmicroservice.dao.redis.JedisFactory` et examiner la méthode `URI getRedisURI()`.
 
 ```java
 public class JedisFactory {

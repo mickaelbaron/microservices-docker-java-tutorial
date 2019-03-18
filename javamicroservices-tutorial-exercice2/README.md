@@ -15,9 +15,9 @@ Le microservice **Redis** a pour objectif de conserver l'état des différents m
 
 * Ouvrir une invite de commande et se placer à la racine du dossier *workspace*.
 
-* Saisir la ligne de commande suivante pour télécharger la dernière version de l'image Docker *Redis*. Cela prendra un petit peu de temps car toutes les couches (*layers*) de l'image doivent être téléchargées. À noter que chaque couche est une image qui fait référence à une image parente.
+* Saisir la ligne de commande suivante pour télécharger la dernière version de l'image Docker *Redis*. Cela prendra un petit peu de temps, car toutes les couches (*layers*) de l'image doivent être téléchargées. À noter que chaque couche est une image qui fait référence à une image parente.
 
-```bash
+```console
 $ docker pull redis
 Using default tag: latest
 latest: Pulling from library/redis
@@ -31,17 +31,17 @@ Digest: sha256:bf65ecee69c43e52d0e065d094fbdfe4df6e408d47a96e56c7a29caaf31d3c35
 Status: Downloaded newer image for redis:latest
 ```
 
-* S'assurer que l'image a été correctement téléchargée en utilisant la commande images de l'outil docker.
+* S'assurer que l'image a été correctement téléchargée en utilisant la commande images de l'outil Docker.
 
-```bash
+```console
 $ docker images
 REPOSITORY          TAG           IMAGE ID          CREATED          SIZE
 redis               latest        ce25c7293564      2 weeks ago      95MB
 ```
 
-* Les différentes couches de l'image peuvent être consultées en utilisant la commande `history` de l'outil docker.
+* Les différentes couches de l'image peuvent être consultées en utilisant la commande `history` de l'outil Docker.
 
-```bash
+```console
 $ docker history redis
 ce25c7293564        2 weeks ago         /bin/sh -c #(nop)  CMD ["redis-server"]         0B
 <missing>           2 weeks ago         /bin/sh -c #(nop)  EXPOSE 6379/tcp              0B
@@ -55,7 +55,7 @@ ce25c7293564        2 weeks ago         /bin/sh -c #(nop)  CMD ["redis-server"] 
 
 * Créer un conteneur à partir de l'image Docker de Redis en saisissant la ligne de commande suivante.
 
-```bash
+```console
 $ docker run --name redis -v $(pwd)/data:/data -d redis redis-server --appendonly yes
 c95b96730f1e3ff7e99d5d380b7d871fcd1a7dab2883be41b50e237f8012763c
 ```
@@ -64,7 +64,7 @@ Un conteneur appelé *redis* sera créé. L'option `-v $(pwd)/data:/data` permet
 
 * Exécuter la ligne de commande suivante pour vérifier que le conteneur a été créé.
 
-```bash
+```console
 $ docker ps
 CONTAINER ID        IMAGE               COMMAND                  CREATED             STATUS              PORTS               NAMES
 c95b96730f1e        redis               "docker-entrypoint.s…"   2 minutes ago       Up 2 minutes        6379/tcp            redis

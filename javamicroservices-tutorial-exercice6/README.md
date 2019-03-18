@@ -1,6 +1,6 @@
 # Exercice 6 (JavaMicroservices) : émettre et recevoir des événements
 
-Nous allons enrichir le projet Java du service web *HelloWorld* de façon à ce qu'un message *HelloWorld* puisse être publié sur le bus d'événements de RabbitMQ à chaque fois que le service web de création est appelé. Nous allons également créer un nouveau microservice appelé **Log** (contenu dans le projet *helloworldlogmicroservice*) qui se chargera de réceptionner les événements envoyés au bus d'événements de RabbitMQ. Pour cela, nous allons utiliser un nouveau projet Java pour l'affichage des logs sur la console.
+Nous allons enrichir le projet Java du service web *HelloWorld* de façon à ce qu'un message « HelloWorld » puisse être publié sur le bus d'événements de RabbitMQ à chaque fois que le service web de création est appelé. Nous allons également créer un nouveau microservice appelé **Log** (contenu dans le projet *helloworldlogmicroservice*) qui se chargera de réceptionner les événements envoyés au bus d'événements de RabbitMQ. Pour cela, nous allons utiliser un nouveau projet Java pour l'affichage des logs sur la console.
 
 ## But
 
@@ -52,9 +52,9 @@ public class HelloWorldResource {
 }
 ```
 
-* Mettre à jour l'image du microservice **Rest** défini dans le projet *helloworldrestmicroservice*. se placer à la racine du projet `helloworldrestmicroservice` et exécuter la ligne de commande suivante.
+* Mettre à jour l'image du microservice **Rest** défini dans le projet *helloworldrestmicroservice*, se placer à la racine du projet *helloworldrestmicroservice* et exécuter la ligne de commande suivante.
 
-```bash
+```console
 $ docker build -t mickaelbaron/helloworldrestmicroservice .
 ...
 ```
@@ -73,8 +73,8 @@ LABEL MAINTAINER="Mickael BARON"
 
 ENV MAVEN_VERSION 3.3.9
 RUN curl -fsSLk https://archive.apache.org/dist/maven/maven-3/$MAVEN_VERSION/binaries/apache-maven-$MAVEN_VERSION-bin.tar.gz | tar xzf - -C /usr/share \
-	&& mv /usr/share/apache-maven-$MAVEN_VERSION /usr/share/maven \
-	&& ln -s /usr/share/maven/bin/mvn /usr/bin/mvn
+    && mv /usr/share/apache-maven-$MAVEN_VERSION /usr/share/maven \
+    && ln -s /usr/share/maven/bin/mvn /usr/bin/mvn
 ENV MAVEN_HOME /usr/share/maven
 
 ADD pom.xml /work/pom.xml
@@ -88,9 +88,9 @@ ENTRYPOINT ["java", "-cp", "target/classes:target/dependency/*", "fr.mickaelbaro
 CMD [localhost]
 ```
 
-* Nous allons construire l'image à partir de fichier *Dockerfile*, exécutez la ligne de commande suivante depuis la racine du projet *helloworldlogmicroservice*.
+* Nous allons construire l'image à partir de fichier *Dockerfile*, exécuter la ligne de commande suivante depuis la racine du projet *helloworldlogmicroservice*.
 
-```bash
+```console
 $ docker build -t mickaelbaron/helloworldlogmicroservice .
 ... // Des tonnes de lignes
 Step 6/12 : ADD pom.xml /work/pom.xml
@@ -105,7 +105,7 @@ Vous remarquerez que la construction de l'image commence réellement à partir d
 
 * Nous ne pouvons pas continuer tant que le serveur RabbitMQ n’est pas mis en place. Nous allons donc l'installer en l'isolant dans un conteneur. Le microservice résultat s'appellera **Rabbitmq**. Nous utiliserons une image de RabbitMQ contenant une interface web pour la gestion des événements reçus et envoyés (*rabbitmq:management*).
 
-```bash
+```console
 docker pull rabbitmq:management
 management: Pulling from library/rabbitmq
 f17d81b4b692: Pull complete
@@ -114,18 +114,18 @@ Digest: sha256:3eb2fa0f83914999846f831f14b900c0c85cea8e5d2db48ff73cf7defa12fe96
 Status: Downloaded newer image for rabbitmq:management
 ```
 
-* Il ne nous reste plus qu'à créer tous les conteneurs **rest**, **redis** et **rabbitmq** et de les connecter au réseau Docker *helloworldnetwork*. Exécutez les lignes de commande suivantes en faisant attention d'être à la racine du répertoire _workspace_.
+* Il ne nous reste plus qu'à créer tous les conteneurs **rest**, **redis** et **rabbitmq** et de les connecter au réseau Docker *helloworldnetwork*. Exécuter les lignes de commande suivantes en faisant attention d'être à la racine du répertoire _workspace_.
 
-```bash
-$ docker run --name redis -d --network helloworldnetwork -v $(pwd)/data:/data redis redis-server --appendonly yes
-$ docker run --name rabbitmq -d --network helloworldnetwork -p 5672:5672 -p 15672:15672 --hostname my-rabbit rabbitmq:management
-$ docker run --name log -d --network helloworldnetwork mickaelbaron/helloworldlogmicroservice rabbitmq
-$ docker run --name rest -d --network helloworldnetwork -p 8080:8080 --env REDIS_HOST=tcp://redis:6379 --env RABBITMQ_HOST=rabbitmq  mickaelbaron/helloworldrestmicroservice
+```console
+docker run --name redis -d --network helloworldnetwork -v $(pwd)/data:/data redis redis-server --appendonly yes
+docker run --name rabbitmq -d --network helloworldnetwork -p 5672:5672 -p 15672:15672 --hostname my-rabbit rabbitmq:management
+docker run --name log -d --network helloworldnetwork mickaelbaron/helloworldlogmicroservice rabbitmq
+docker run --name rest -d --network helloworldnetwork -p 8080:8080 --env REDIS_HOST=tcp://redis:6379 --env RABBITMQ_HOST=rabbitmq  mickaelbaron/helloworldrestmicroservice
 ```
 
 * Assurons-nous que tous les conteneurs soient opérationnels en affichant le statut des conteneurs.
 
-```bash
+```console
 $ docker ps
 CONTAINER ID        IMAGE                                     COMMAND                  CREATED             STATUS              PORTS                                     NAMES
 d3a1e7f0594b        mickaelbaron/helloworldrestmicroservice   "java -cp target/cla…"   4 minutes ago       Up 4 minutes        0.0.0.0:8080->8080/tcp                    rest
@@ -138,13 +138,13 @@ ac2314ccc4bf        rabbitmq:management                       "docker-entrypoint
 
 ![Interface d'administration RabbitMQ](./images/rabbitmq.png "Interface d'administration RabbitMQ")
 
-* Appeler le service web *HelloWorld* pour tester la chaîne complète des microservices. Exécuter les deux lignes de commandes suivantes afin de poster un message *HelloWorld* et de récupérer les messages *HelloWorld* envoyés.
+* Appeler le service web *HelloWorld* pour tester la chaîne complète des microservices en exécutant les deux lignes de commandes.
 
-```bash
-# Création d'un HelloWorld à partir d'un contenu JSON
+```console
+# Création d'un message « HelloWorld » à partir d'un contenu JSON
 $ curl -H "Content-Type: application/json" -X POST -d '{"message":"Mon HelloWorld"}' http://localhost:8080/helloworld
 
-# Lister les HelloWorld
+# Lister les messages « HelloWorld »
 $ curl http://localhost:8080/helloworld
 [{"rid":3,"message":"Mon HelloWorld avec presque tous les microservices","startDate":"Sun Dec 30 21:10:09 UTC 2018"},{"rid":2,"message":"Mon HelloWorld","startDate":"Sat Dec 29 07:38:01 CET 2018"},{"rid":1,"message":"Mon HelloWorld","startDate":"Sat Dec 29 07:30:01 CET 2018"}]
 ```

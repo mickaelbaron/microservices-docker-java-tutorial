@@ -4,8 +4,8 @@ Le microservice **Rest** a pour objectif d'isoler dans un conteneur Docker le pr
 
 ## But
 
-* Construction d'un fichier Dockerfile.
-* Construction d'une image Docker.
+* Écrire un fichier Dockerfile.
+* Construire une image Docker.
 * Isoler un programme Java.
 
 ## Étapes à suivre
@@ -39,7 +39,7 @@ Donnons quelques détails sur le contenu de ce fichier. À la ligne 1, il est pr
 
 * Nous allons construire l'image à partir de fichier *Dockerfile*, exécuter la ligne de commande suivante.
 
-```bash
+```console
 $ docker build -t mickaelbaron/helloworldrestmicroservice .
 ...
 Step 8/12 : RUN ["mvn", "dependency:go-offline"]
@@ -72,7 +72,7 @@ Remarquer le téléchargement des dépendances Java (les fichiers Jar) réalisé
 
 * S'assurer que l'image a été correctement construite en exécutant la ligne de commande suivante.
 
-```bash
+```console
 $ docker images
 REPOSITORY                                       TAG                 IMAGE ID            CREATED             SIZE
 mickaelbaron/helloworldrestmicroservice          latest              e04b1b2fc0aa        9 minutes ago       706MB
@@ -80,11 +80,11 @@ redis                                            latest              ce25c729356
 java                                             openjdk-8-jdk       d23bdf5b1b1b        23 months ago       643MB
 ```
 
-Vous remarquerez que l'image *java* est disponible puisque l'image que nous venons de construire est basée sur celle-ci. Notez également la taille de notre image 706 MB. En fait l'image *mickaelbaron/helloworldrestmicroservice* ne pèse que ~ 60 MB car toute la partie Java 8 est déjà présente dans l'image de base *java*.
+Vous remarquerez que l'image *java* est disponible puisque l'image que nous venons de construire est basée sur celle-ci. Noter également la taille de notre image 706 MB. En fait l'image *mickaelbaron/helloworldrestmicroservice* ne pèse que ~ 60 MB car toute la partie Java 8 est déjà présente dans l'image de base *java*.
 
 * Vérifions que les dépendances Java (les fichiers Jar) ont correctement été stockées dans les couches de notre image. Exécuter la ligne de commande suivante.
 
-```bash
+```console
 $ docker history mickaelbaron/helloworldrestmicroservice
 IMAGE               CREATED             CREATED BY                                      SIZE                COMMENT
 e04b1b2fc0aa        13 minutes ago      /bin/sh -c #(nop)  ENTRYPOINT ["java" "-cp" …   0B
@@ -102,11 +102,11 @@ d23bdf5b1b1b        23 months ago       /bin/sh -c /var/lib/dpkg/info/ca-certifi
 <missing>           23 months ago       /bin/sh -c set -x  && apt-get update  && apt…   352MB
 ```
 
-Nous remarquons à ligne 7 (`0f237d437944`), l'exécution de notre commande `$ mvn dependency:go-offline` dont le résultat a fait augmenter la taille de l'image de 34 MB. Ceci est dû aux dépendances Java qui ont été téléchargées. Par conséquent, si nous modifions uniquement le code source de notre projet, seules la compilation des sources seront réalisées.
+Nous remarquons à ligne 7 (`0f237d437944`), l'exécution de notre commande `$ mvn dependency:go-offline` dont le résultat a fait augmenter la taille de l'image de 34 MB. Ceci est dû aux dépendances Java qui ont été téléchargées. Par conséquent, si nous modifions uniquement le code source de notre projet, seule la compilation des sources sera réalisée.
 
 * Éditer la classe `fr.mickaelbaron.helloworldrestmicroservice.service.HelloWorldResource` et faites une modification (ajouter par exemple un espace), puis relancer la construction de l'image.
 
-```bash
+```console
 $ docker build -t mickaelbaron/helloworldrestmicroservice .
 ...
 Step 9/12 : ADD ["src", "/work/src"]
@@ -123,4 +123,4 @@ Step 10/12 : RUN ["mvn", "package"]
 ...
 ```
 
-Vous noterez que la construction de l'image se fait plus rapidement car les étapes précédant l'étape 9 sont en cache.
+Vous noterez que la construction de l'image se fait plus rapidement, car les étapes précédant l'étape 9 sont en cache.
