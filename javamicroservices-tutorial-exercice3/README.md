@@ -15,21 +15,21 @@ Pour la redirection du port 6379 de l'hôte vers le port 6379 du conteneur vous 
 
 * Supprimer le conteneur nommé *redis* via la ligne de commande suivante.
 
-```bash
+```console
 $ docker rm -f redis
 redis
 ```
 
 * Créer un nouvelle fois le conteneur *redis* en ajoutant le paramètre `-p 6379:6379` permettant de rediriger le port 6379 de l'hôte vers le port 6379 du conteneur.
 
-```bash
+```console
 $ docker run --name redis -v $(pwd)/data:/data -p 6379:6379 -d redis redis-server --appendonly yes
 a1f4e49c2ea5af796012ca5665bb57daba47158bb855cf6dcd4bca79382d025f
 ```
 
 * Exécuter la ligne de commande suivante pour vérifier que le conteneur a été créé et que le port 6379 a été redirigé. Une nouvelle colonne `PORTS` fait son apparition et précise que le port de l'hôte est redirigé vers le port 6379 du conteneur.
 
-```bash
+```console
 $ docker ps
 CONTAINER ID        IMAGE               COMMAND                  CREATED             STATUS              PORTS                    NAMES
 a1f4e49c2ea5        redis               "docker-entrypoint.s…"   8 hours ago         Up 8 hours          0.0.0.0:6379->6379/tcp   redis
@@ -37,7 +37,7 @@ a1f4e49c2ea5        redis               "docker-entrypoint.s…"   8 hours ago  
 
 * Exécuter la ligne de commande suivante pour obtenir plus d'information sur le conteneur nommé *redis*.
 
-```bash
+```console
 $ docker inspect redis
 [
     {
@@ -86,15 +86,15 @@ Désormais nous pouvons démarrer le projet Java *helloworldrestmicroservice* af
 
 * Depuis la configuration d'exécution, ajouter une variable d'environnement appelée (onglet Environment) `REDIS_HOST` avec la valeur `tcp://0.0.0.0:6379`, puis faire **Run**.
 
-* Pour tester le service web *HelloWorld*, nous utiliserons l'outil **cURL**. Exécuter les deux lignes de commandes suivantes afin de poster un message *HelloWorld* et de récupérer les messages *HelloWorld* envoyés.
+* Pour tester le service web *HelloWorld*, nous utiliserons l'outil **cURL**. Exécuter les deux lignes de commandes suivantes afin de poster un message « HelloWorld » et de récupérer les messages « HelloWorld » envoyés.
 
-```bash
-# Création d'un HelloWorld à partir d'un contenu JSON
+```console
+# Création d'un message « HelloWorld » à partir d'un contenu JSON.
 $ curl -H "Content-Type: application/json" -X POST -d '{"message":"Mon HelloWorld"}' http://localhost:8080/helloworld
 
-# Lister les HelloWorld
+# Lister les messages « HelloWorld ».
 $ curl http://localhost:8080/helloworld
-[{"`rid":1,"message":"Mon HelloWorld","startDate":"Sat Dec 29 07:38:01 CET 2018"}]
+[{"rid":1,"message":"Mon HelloWorld","startDate":"Sat Dec 29 07:38:01 CET 2018"}]
 ```
 
 Tout fonctionne parfaitement. Notre programme Java du service web *HelloWorld* est prêt à être isolé dans un conteneur Docker afin de devenir le microservice **Rest**.

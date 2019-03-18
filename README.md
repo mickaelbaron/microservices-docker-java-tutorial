@@ -1,6 +1,6 @@
 # JavaMicroservices Tutoriel
 
-L'objectif de cette série d'exercices est d'apprendre à construire une application en respectant une architecture à base de microservices.
+L'objectif de cette série d'exercices est d'apprendre à construire une application en respectant une architecture à base de microservices en se focalisant sur le langage Java.
 
 Nous utiliserons pour cela plusieurs technologies :
 
@@ -29,7 +29,7 @@ Avant de démarrer cette série d'exercices, veuillez préparer votre environnem
 
 ## Présentation de l'étude de cas
 
-L'étude de cas utilisée est une application permettant de diffuser des message « HelloWorld ». Elle fournit une interface web pour la saisie et pour la consultation des messages (voir figure ci-dessous).
+L'étude de cas utilisée est une application permettant de diffuser des messages « HelloWorld ». Elle fournit une interface web pour la saisie et pour la consultation des messages (voir figure ci-dessous).
 
 ![Application HelloWorld](./images/helloworldapplication.png "Application HelloWorld")
 

@@ -4,7 +4,7 @@
 
 ## But
 
-* Apprendre à créer un réseau Docker.
+* Créer un réseau Docker.
 * Associer un conteneur existant à un réseau Docker.
 * Créer un conteneur en spécifiant un réseau Docker.
 * Définir des variables d'environnement à la création d'un conteneur Docker.
@@ -32,15 +32,15 @@ NETWORK ID          NAME                DRIVER              SCOPE
 
 Vous remarquerez que des réseaux Docker sont déjà existants (*bridge*, *host* et *none*). Ils sont créés par défaut lors de l'installation de Docker. Par exemple le réseau *bridge* est le réseau par défaut. Si aucun réseau n’est spécifié à la construction d’un conteneur, le conteneur se connectera sur le réseau par défaut *bridge*. Le conteneur nommé *redis* créé dans les précédents exercices utilise ce réseau. Les conteneurs connectés sur le réseau par défaut *bridge* se voient tous mais sont **UNIQUEMENT** accessibles en utilisant les IPs (pas les noms). Le réseau par défaut bridge n’est pas **RECOMMANDÉ** pour la mise en production.
 
-> Chaque conteneur connecté à un réseau Docker se verra identifié dans ce réseau par son nom. Dans le réseau Docker `helloworldnetwork` le conteneur *redis* sera identifié par *redis*.
+> Chaque conteneur connecté à un réseau Docker se verra identifié dans ce réseau par son nom. Dans le réseau Docker *helloworldnetwork* le conteneur *redis* sera identifié par *redis*.
 
-* Nous allons connecter le conteneur Redis précédemment créé au réseau Docker *helloworldnetwork*.
+* Nous allons connecter le conteneur *redis* précédemment créé au réseau Docker *helloworldnetwork*.
 
 ```bash
 docker network connect helloworldnetwork redis
 ```
 
-* Pour vérifier que le conteneur Redis est bien connecté au réseau Docker *helloworldnetwork* deux solutions sont possibles : en interrogeant le conteneur ou le réseau Docker.
+* Pour vérifier que le conteneur Redis est bien connecté au réseau Docker *helloworldnetwork* deux solutions sont possibles : en interrogeant soit le conteneur soit le réseau Docker.
 
 1. Afficher les informations du conteneur *redis* via l'option `inspect`.
 
@@ -140,7 +140,7 @@ Cette instruction crée un conteneur Docker appelé **Rest** (`--name rest`), do
 * Assurons-nous que les deux conteneurs *redis* et *rest* sont connectés dans le réseau Docker *helloworldnetwork*.
 
 ```bash
-docker network inspect helloworldnetwork
+$ docker network inspect helloworldnetwork
 ...
         "Containers": {
             "28eba01ed267a1618019df724cbc7686b574c2f73b0575ea1352f58cdaa4afc5": {
@@ -172,13 +172,13 @@ PING redis (172.19.0.2): 56 data bytes
 ...
 ```
 
-* Il nous reste plus qu'à tester le service web contenu dans le conteneur *rest*. Exécuter les deux lignes de commandes suivantes afin de poster un message *HelloWorld* et de récupérer les messages *HelloWorld* envoyés.
+* Il nous reste plus qu'à tester le service web contenu dans le conteneur *rest*. Exécuter les deux lignes de commandes suivantes afin de poster un message « HelloWorld » et de récupérer les messages « HelloWorld » envoyés.
 
 ```bash
-# Création d'un HelloWorld à partir d'un contenu JSON
+# Création d'un message « HelloWorld » à partir d'un contenu JSON
 $ curl -H "Content-Type: application/json" -X POST -d '{"message":"Mon HelloWorld"}' http://localhost:8080/helloworld
 
-# Lister les HelloWorld
+# Lister les messages « HelloWorld »
 $ curl http://localhost:8080/helloworld
-[{"`rid":1,"message":"Mon HelloWorld","startDate":"Sat Dec 29 07:38:01 CET 2018"},{"rid":1,"message":"Mon HelloWorld","startDate":"Sat Dec 29 07:38:01 CET 2018"}]
+[{"rid":1,"message":"Mon HelloWorld","startDate":"Sat Dec 29 07:38:01 CET 2018"},{"rid":1,"message":"Mon HelloWorld","startDate":"Sat Dec 29 07:38:01 CET 2018"}]
 ```
