@@ -196,7 +196,7 @@ Step 12/12 : ENTRYPOINT ["java", "-cp", "classes:dependency/*", "com.kumuluz.ee.
  ---> 4f6445d0688f
 Successfully built 4f6445d0688f
 Successfully tagged mickaelbaron/helloworldrestmicroservice:latest
-...
+```
 
 * S'assurer que l'image a été correctement construite en exécutant la ligne de commande suivante.
 
