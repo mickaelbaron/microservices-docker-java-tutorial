@@ -1,0 +1,18 @@
+# Build env
+FROM maven:3-jdk-8 AS build-java-stage
+LABEL maintainer="Mickael BARON"
+
+ADD pom.xml /work/pom.xml
+WORKDIR /work
+RUN ["mvn", "dependency:go-offline"]
+
+ADD ["src", "/work/src"]
+RUN ["mvn", "package"]
+
+# Run env
+FROM openjdk:8-jre-slim
+COPY --from=build-java-stage /work/target/classes /classes/
+COPY --from=build-java-stage /work/target/dependency/*.jar /dependency/
+
+EXPOSE 8080
+ENTRYPOINT ["java", "-cp", "classes:dependency/*", "com.kumuluz.ee.EeApplication"]
