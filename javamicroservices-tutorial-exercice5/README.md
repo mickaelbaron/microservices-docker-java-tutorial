@@ -1,4 +1,4 @@
-# Exercice 5 (JavaMicroservices) : lier les microservices Redis et Rest
+# Exercice 5 : lier les microservices Redis et Rest
 
 À cette étape nous disposons d'un conteneur correspondant au microservice **Redis** et d'une image Docker pour le futur microservice **Rest** dont le code se trouve dans le projet *helloworldrestmicroservice*. Nous allons nous intéresser dans cet exercice à créer le conteneur du microservice **Rest** et lui associer le conteneur du microservice **Redis**. Pour réaliser cette association, nous utilisons des réseaux Docker.
 
