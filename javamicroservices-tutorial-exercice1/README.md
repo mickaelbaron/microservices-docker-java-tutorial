@@ -1,4 +1,4 @@
-# Exercice 1 (JavaMicroservices) : préparer le programme Java du service web HelloWorld (Rest)
+# Exercice 1 : préparer le programme Java du service web HelloWorld (Rest)
 
 Le projet Java (celui qui servira pour le microservice **Rest**) du service web *HelloWorld* a été développé en utilisant les spécifications JAX-RS et CDI. Ces deux spécifications font parties du modèle de programmation MicroProfile permettant le développement de microservice avec le langage Java. Nous utiliserons KumuluzEE comme solution d'implémentation à MicroProfile. À noter que KumuluzEE utilise l'implémentation JERSEY pour JAX-RS.
 
