@@ -1,4 +1,4 @@
-# Exercice 7 (JavaMicroservices) : composer tous les microservices avec DockerCompose
+# Exercice 7 : composer tous les microservices avec DockerCompose
 
 Dans les précédents exercices, nous avons procédé à la création de chaque image et nous avons ensuite créé les conteneurs associés. Toutes ces tâches ont été réalisées via les commandes **docker pull**, **docker build** et **docker run**. Comme nous avons pu le constater, cela reste utilisable quand il y a peu de conteneur, mais lorsqu'il y a plus de deux conteneurs cela devient difficile de tout gérer. C'est pour cette raison que nous allons employer l'outil **docker-compose**.
 

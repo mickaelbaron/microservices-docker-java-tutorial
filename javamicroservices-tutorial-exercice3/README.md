@@ -1,4 +1,4 @@
-# Exercice 3 (JavaMicroservices) : tester le service web HelloWorld (Rest) avec le microservice Redis
+# Exercice 3 : tester le service web HelloWorld (Rest) avec le microservice Redis
 
 Revenons un instant sur le projet *helloworldrestmicroservice* qui implémente le microservice **Rest** (voir premier exercice). Pour assurer la communication entre ce projet (pas encore isolé dans un conteneur Docker) et le microservice **Redis** la solution est de rediriger le port 6379 de l'hôte vers le port 6379 du conteneur (le port par défaut de Redis).
 

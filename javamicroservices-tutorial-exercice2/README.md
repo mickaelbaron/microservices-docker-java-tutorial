@@ -1,4 +1,4 @@
-# Exercice 2 (JavaMicroservices) : préparer le microservice Redis (créer un conteneur à partir d'une image existante)
+# Exercice 2 : préparer le microservice Redis (créer un conteneur à partir d'une image existante)
 
 Le microservice **Redis** a pour objectif de conserver l'état des différents messages *HelloWorld* traités par le microservice **Rest**. Cette conservation de données se fera par l'intermédiaire d'un serveur de données NoSQL Redis. Ce serveur permettra au microservice **Rest** de s'y connecter afin de conserver la création des messages *HelloWorld*.
 

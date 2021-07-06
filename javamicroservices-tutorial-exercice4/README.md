@@ -1,4 +1,4 @@
-# Exercice 4 (JavaMicroservices) : préparer le microservice Rest (écrire un Dockerfile et créer sa propre image Docker)
+# Exercice 4 : préparer le microservice Rest (écrire un Dockerfile et créer sa propre image Docker)
 
 Le microservice **Rest** a pour objectif d'isoler dans un conteneur Docker le projet Java du service web *HelloWorld*. Une image Docker à base de Java et de Maven sera utilisée. Elle sera construite en s'assurant que le projet Maven compile correctement.
 

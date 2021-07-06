@@ -1,4 +1,4 @@
-# Exercice 6 (JavaMicroservices) : émettre et recevoir des événements
+# Exercice 6 : émettre et recevoir des événements
 
 Nous allons enrichir le projet Java du service web *HelloWorld* de façon à ce qu'un message « HelloWorld » puisse être publié sur le bus d'événements de RabbitMQ à chaque fois que le service web de création est appelé. Nous allons également créer un nouveau microservice appelé **Log** (contenu dans le projet *helloworldlogmicroservice*) qui se chargera de réceptionner les événements envoyés au bus d'événements de RabbitMQ. Pour cela, nous allons utiliser un nouveau projet Java pour l'affichage des logs sur la console.
 
