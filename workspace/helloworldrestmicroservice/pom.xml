@@ -7,24 +7,27 @@
 	<version>1.0-SNAPSHOT</version>
 	<properties>
 		<!-- To complete -->
-		<rabbitmq.version>5.5.1</rabbitmq.version>
+		<rabbitmq.version>5.14.2</rabbitmq.version>
 		<gson.version>2.8.5</gson.version>
-
+		<redis-client.version>4.2.2</redis-client.version> <!-- 4.2.2 -->
+		<commons-beanutils-version>1.9.4</commons-beanutils-version>
 		<!-- Java version we use -->
-		<maven.compiler.source>1.8</maven.compiler.source>
-		<maven.compiler.target>1.8</maven.compiler.target>
+		<maven.compiler.source>11</maven.compiler.source>
+		<maven.compiler.target>11</maven.compiler.target>
+		<!-- Maven plugins -->
+		<maven-dependency-plugin.version>3.3.0</maven-dependency-plugin.version>
 	</properties>
 	<dependencies>
 		<!-- To complete -->
 		<dependency>
 			<groupId>redis.clients</groupId>
 			<artifactId>jedis</artifactId>
-			<version>2.7.2</version>
+			<version>${redis-client.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>commons-beanutils</groupId>
 			<artifactId>commons-beanutils</artifactId>
-			<version>1.9.4</version>
+			<version>${commons-beanutils-version}</version>
 		</dependency>
 		<dependency>
 			<groupId>com.rabbitmq</groupId>
@@ -35,11 +38,6 @@
 			<groupId>com.google.code.gson</groupId>
 			<artifactId>gson</artifactId>
 			<version>${gson.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>javax.xml.bind</groupId>
-			<artifactId>jaxb-api</artifactId>
-			<version>2.3.1</version>
 		</dependency>
 	</dependencies>
 	<build>

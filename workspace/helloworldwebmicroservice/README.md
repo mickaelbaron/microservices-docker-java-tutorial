@@ -1,31 +1,35 @@
-# Prerequites
+# helloworldwebmicroservice
 
-* npm (on OS X: `brew install node`)
-* grunt-cli (from a node installation: `npm install -g grunt cli`)
+This template should help get you started developing with Vue 3 in Vite.
 
-# Commands
+## Recommended IDE Setup
 
-* Install node modules
+[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=johnsoncodehk.volar) (and disable Vetur) + [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=johnsoncodehk.vscode-typescript-vue-plugin).
 
-```shell
-$ npm install
+## Customize configuration
+
+See [Vite Configuration Reference](https://vitejs.dev/config/).
+
+## Project Setup
+
+```sh
+npm install
 ```
 
-* Generate the site directory
+### Compile and Hot-Reload for Development
 
-```shell
-$ grunt 
+```sh
+npm run dev
 ```
 
-* Clean the project (remove both _site_ and _bower\_components_ directories)
+### Compile and Minify for Production
 
-```shell
-$ grunt clean
+```sh
+npm run build
 ```
 
-* Clean the complete project (remove the _site_, _bower\_components_ and _node_modules_ directories)
+### Lint with [ESLint](https://eslint.org/)
 
-```shell
-$ grunt clean:complete
+```sh
+npm run lint
 ```
-

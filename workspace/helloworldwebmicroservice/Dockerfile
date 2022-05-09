@@ -1,15 +1,18 @@
-FROM node:latest
-LABEL MAINTAINER="Mickael BARON"
+# Build env
+FROM node:slim as build-npm-stage
+LABEL maintainer="Mickael BARON"
 
-RUN npm install -g grunt-cli && npm install -g http-server
+WORKDIR /web
+COPY package.json ./
+RUN npm install
+COPY index.html ./
+COPY src ./src
+COPY vite.config.js ./
 
-WORKDIR /workdir
-ADD ["bower.json","Gruntfile.js","package.json","/workdir/"]
-RUN npm install && grunt dependencies
+RUN npm run build
 
-ADD src /workdir/src
-RUN grunt package
-
-EXPOSE 8080
-
-ENTRYPOINT ["http-server","/workdir/site", "-p", "8080"]
+# Run env
+FROM nginx:latest
+COPY --from=build-npm-stage /web/dist /usr/share/nginx/html
+EXPOSE 80
+CMD ["nginx", "-g", "daemon off;"]

@@ -15,13 +15,13 @@ Dans la suite, on appelle « microservice », un programme qui implémente une f
 
 **Buts pédagogiques** : développer un microservice avec le langage Java et la spécification MicroProfile, télécharger une image Docker, créer une image Docker, créer un conteneur Docker, faire communiquer plusieurs conteneurs Docker, mettre en place un bus d'événements, composer des microservices avec Docker Compose.
 
-> Ce dépôt est utilisé dans le cadre d'un cours sur les architectures orientées services que je dispense à l'[ISAE-ENSMA](https://www.ensma.fr) et à l'[Université de Poitiers](https://www.univ-poitiers.fr/) en français. Tous les supports de cours et tutoriaux sont disponibles sur ma page Developpez.com : [https://mbaron.developpez.com](https://mbaron.developpez.com/#page_soa).
+> Ce dépôt est utilisé dans le cadre d'un cours sur les architectures orientées services que je dispense à l'[ISAE-ENSMA](https://www.ensma.fr) et à l'[Université de Poitiers](http://www.univ-poitiers.fr/) en français. Tous les supports de cours et tutoriaux sont disponibles sur mon blog personnel : [https://mickael-baron.fr/soa/](https://mickael-baron.fr/soa/).
 
 ## Prérequis logiciels
 
 Avant de démarrer cette série d'exercices, veuillez préparer votre environnement de développement en installant les outils suivants :
 
-* [Java via OpenJDK](https://jdk.java.net/ "Java 8 à 11") ;
+* [Java via OpenJDK](https://jdk.java.net/ "Java") ;
 * [Maven](https://maven.apache.org/ "Maven") ;
 * [Eclipse](https://www.eclipse.org/ "Eclipse") ;
 * [cURL](https://curl.haxx.se "cURL") ;
