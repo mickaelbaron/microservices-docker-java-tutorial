@@ -22,9 +22,9 @@ public class HelloWorldLogMicroservice {
 		ConnectionFactory factory = new ConnectionFactory();
 		factory.setHost(rabbitMQHosts);
 
-//		final Connection connection = createConnection(factory);
-		Connection connection = factory.newConnection();
-		final Channel channel = connection.createChannel();
+		final Connection connection = createConnection(factory);
+//		Connection connection = factory.newConnection();
+		final Channel channel = connection.createChannel(); 
 
 		channel.exchangeDeclare(EXCHANGE_NAME, "fanout");
 		String queueName = channel.queueDeclare().getQueue();

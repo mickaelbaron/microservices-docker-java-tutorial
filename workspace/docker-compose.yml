@@ -1,11 +1,14 @@
-version: '3'
-
 services:
   redis:
     image: redis:latest
     command: redis-server --appendonly yes
     volumes: 
       - ./data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli","ping"]
+      interval: 3s
+      timeout: 5s
+      retries: 3
     networks:
       - helloworldnet
 
@@ -15,15 +18,24 @@ services:
     ports:
       - 5672:5672
       - 15672:15672
+    healthcheck:
+      test: ["CMD", "rabbitmq-diagnostics","-q", "ping"]
+      interval: 5s
+      timeout: 5s
+      retries: 3
     networks:
       - helloworldnet
  
   rest:
-    build: helloworldrestmicroservice/
+    build:
+      context: helloworldrestmicroservice/
+      dockerfile: DockerfileMSB
     image: mickaelbaron/helloworldrestmicroservice:latest
     depends_on: 
-      - rabbitmq
-      - redis
+      rabbitmq:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
     ports:
       - 8080:8080
     environment:
@@ -36,7 +48,7 @@ services:
     build: helloworldwebmicroservice
     image: mickaelbaron/helloworldwebmicroservice:latest
     ports:
-      - 80:8080
+      - 80:80
     networks:
       - helloworldnet
 
@@ -44,12 +56,12 @@ services:
     build: helloworldlogmicroservice/
     image: mickaelbaron/helloworldlogmicroservice:latest
     depends_on:
-      - rabbitmq
+      rabbitmq:
+        condition: service_healthy
     command: rabbitmq
     networks:
       - helloworldnet
 
 networks:
   helloworldnet:
-    external:
-      name: helloworldnetwork
+    name: helloworldnetwork

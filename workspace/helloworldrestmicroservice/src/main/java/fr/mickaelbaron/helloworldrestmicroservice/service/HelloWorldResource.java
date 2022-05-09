@@ -29,6 +29,9 @@ public class HelloWorldResource {
 	@Named("redis")
 	private IHelloWorldDAO currentDAO;
 
+	@Inject
+	private IHelloWorldEventProducer currentProducer;
+
 	@GET
 	public Response getHelloWorlds() {
 		return Response.ok(currentDAO.getHelloWorlds()).build();
@@ -41,6 +44,7 @@ public class HelloWorldResource {
 		}
 
 		currentDAO.addHelloWorld(newHelloWorld);
+		currentProducer.sendMessage(newHelloWorld);
 
 		return Response.status(Status.CREATED).build();
 	}

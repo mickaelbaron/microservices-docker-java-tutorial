@@ -1,1 +1,0 @@
-var restHostUrl = "http://localhost:8080/helloworld";
