@@ -107,7 +107,7 @@ FROM openjdk:11-jre-slim
 COPY --from=build-java-stage /work/target/classes /classes/
 COPY --from=build-java-stage /work/target/dependency/*.jar /dependency/
 
-ENTRYPOINT ["java", "-cp", "target/classes:target/dependency/*", "fr.mickaelbaron.helloworldlogmicroservice.HelloWorldLogMicroservice"]
+ENTRYPOINT ["java", "-cp", "classes:dependency/*", "fr.mickaelbaron.helloworldlogmicroservice.HelloWorldLogMicroservice"]
 CMD [localhost]
 ```
 
