@@ -7,7 +7,7 @@
 	<version>1.0-SNAPSHOT</version>
 	<properties>
 		<rabbitmq.version>5.14.2</rabbitmq.version>
-		<gson.version>2.8.5</gson.version>
+		<gson.version>2.8.9</gson.version>
 		<!-- Java version we use -->
 		<maven.compiler.source>11</maven.compiler.source>
 		<maven.compiler.target>11</maven.compiler.target>
