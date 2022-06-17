@@ -51,13 +51,13 @@ Le code du projet Java est assez commun. Un package *service* pour la gestion de
 ```xml
 ...
     <properties>
-        <kumuluzee.version>4.0.0-beta.1</kumuluzee.version>
+        <kumuluzee.version>4.0.0</kumuluzee.version>
         ...
     </properties>
 ...
 ```
 
-> La version `4.0.0-beta.1` de [KumuluzEE](https://ee.kumuluz.com/) supporte la version Java 17 LTS et utilise les artefacts JakartaEE en remplacement des artefacts JavaEE. Bien que cette version soit en béta, l'utilisation pour ce tutoriel n'a pas posé de problème. **Il faudra toutefois attendre une version officielle pour une utilisation en production**.
+> La version `4.0.0` de [KumuluzEE](https://ee.kumuluz.com/) supporte la version Java 17 LTS et utilise les artefacts JakartaEE en remplacement des artefacts JavaEE. Bien que cette version soit en béta, l'utilisation pour ce tutoriel n'a pas posé de problème. **Il faudra toutefois attendre une version officielle pour une utilisation en production**.
 
 Désormais le projet ne contient plus d'erreurs et peut être compilé en totalité (Eclipse s'en charge via la compilation incrémentale).
 
