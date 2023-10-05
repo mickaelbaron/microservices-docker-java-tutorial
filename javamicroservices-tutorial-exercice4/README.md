@@ -113,6 +113,7 @@ Nous remarquons à ligne 7, l'exécution de notre commande `$ mvn dependency:go-
 * Éditer la classe `fr.mickaelbaron.helloworldrestmicroservice.service.HelloWorldResource` et faites une modification (ajouter par exemple un espace), puis relancer la construction de l'image.
 
 ```console
+$ docker build -t mickaelbaron/helloworldrestmicroservice .
 [+] Building 9.2s (13/13) FINISHED
  => [internal] load build definition from Dockerfile                                                                       0.0s
  => => transferring dockerfile: 84B                                                                                        0.0s
@@ -170,6 +171,7 @@ Donnons quelques détails sur le contenu de ce fichier. De la ligne 1 à la lign
 * Nous allons construire l'image à partir du fichier *DockerfileMSB*, exécuter la ligne de commande suivante.
 
 ```console
+$ docker build -t mickaelbaron/helloworldrestmicroservice . -f DockerfileMSB
 [+] Building 12.8s (16/16) FINISHED
  => [internal] load build definition from DockerfileMSB                                                                                        0.0s
  => => transferring dockerfile: 575B                                                                                                           0.0s
