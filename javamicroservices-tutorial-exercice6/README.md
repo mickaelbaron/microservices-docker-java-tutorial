@@ -88,7 +88,7 @@ $ docker build -t mickaelbaron/helloworldrestmicroservice -f DockerfileMSB .
 
 * Créer un fichier *Dockerfile* à la racine du projet *helloworldlogmicroservice*.
 
-* Ouvrrir un éditeur de texte et saisir le contenu présenté ci-dessous.
+* Ouvrir un éditeur de texte et saisir le contenu présenté ci-dessous.
 
 ```yaml
 # Build env
