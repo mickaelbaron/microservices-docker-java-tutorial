@@ -1,9 +1,0 @@
-FROM openjdk:11-jre-slim
-LABEL MAINTAINER="Mickael BARON"
-
-WORKDIR /work
-ADD ["target/classes", "/work/target/classes"]
-ADD ["target/dependency", "/work/target/dependency"]
-
-EXPOSE 8080
-ENTRYPOINT ["java", "-cp", "target/classes:target/dependency/*", "com.kumuluz.ee.EeApplication"]

@@ -16,7 +16,6 @@ services:
     image: rabbitmq:management
     hostname: my-rabbit
     ports:
-      - 5672:5672
       - 15672:15672
     healthcheck:
       test: ["CMD", "rabbitmq-diagnostics","-q", "ping"]
@@ -30,17 +29,15 @@ services:
     build:
       context: helloworldrestmicroservice/
       dockerfile: DockerfileMSB
-    image: mickaelbaron/helloworldrestmicroservice:latest
+    image: mickaelbaron/helloworldrestmicroservice:msb
     depends_on: 
-      rabbitmq:
-        condition: service_healthy
-      redis:
-        condition: service_healthy
+      - rabbitmq
+      - redis
     ports:
-      - 8080:8080
+      - 9080:9080
     environment:
       REDIS_HOST: tcp://redis:6379
-      RABBITMQ_HOST: rabbitmq
+      RABBITMQ_HOST: amqp://rabbitmq:5672
     networks:
       - helloworldnet
 
@@ -56,9 +53,8 @@ services:
     build: helloworldlogmicroservice/
     image: mickaelbaron/helloworldlogmicroservice:latest
     depends_on:
-      rabbitmq:
-        condition: service_healthy
-    command: rabbitmq
+      - rabbitmq
+    command: amqp://rabbitmq:5672
     networks:
       - helloworldnet
 

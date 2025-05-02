@@ -1,122 +1,117 @@
-# Exercice 1 : préparer le programme Java du service web HelloWorld (Rest)
+# Exercice 1 : préparer le programme Java du service web HelloWorld (Rest)
 
-Le projet Java (celui qui servira pour le microservice **Rest**) du service web *HelloWorld* a été développé en utilisant les spécifications JAX-RS et CDI. Ces deux spécifications font parties du modèle de programmation [MicroProfile](https://microprofile.io/) permettant le développement de microservice avec le langage Java. Nous utiliserons [KumuluzEE](https://ee.kumuluz.com/) comme solution d'implémentation à [MicroProfile](https://microprofile.io/). À noter que KumuluzEE utilise l'implémentation JERSEY pour JAX-RS.
+Le projet Java _helloworldrestmicroservice_, celui qui servira pour le microservice **Rest** du service web _HelloWorld_, a été développé en utilisant les spécifications JAX-RS et CDI. Ces deux spécifications font parties du modèle de programmation [MicroProfile](https://microprofile.io/) permettant le développement de microservice avec le langage Java. Nous utiliserons [Open Liberty](https://openliberty.io/) comme solution d'implémentation à [MicroProfile](https://microprofile.io/).
 
-Le code du projet Java est assez commun. Un package *service* pour la gestion des services web REST et un package *dao* pour la gestion des données avec la base de données [Redis](https://redis.io/). Dans cet exercice on va partir d'un code déjà tout prêt et nous allons nous attacher à le configurer pour l'utiliser avec [KumuluzEE](https://ee.kumuluz.com/).
+Le code du projet Java est assez commun. Un package `service` pour la gestion des services web REST, un package `dao` pour la gestion des données avec la base de données [Redis](https://redis.io/) et un package `model` pour représenter les entités manipulées. Dans cet exercice on partira d'un code déjà tout prêt et nous nous attacherons à le configurer pour l'utiliser avec [Open Liberty](https://openliberty.io/).
 
 ## But
 
-* Configurer un microservice respectant MicroProfile avec [KumuluzEE](https://ee.kumuluz.com/).
-* Configurer un fichier *pom.xml* pour gérer les dépendances [Maven](https://maven.apache.org/).
-* Exécuter un microservice Java en ligne de commande.
+- Configurer un microservice respectant [MicroProfile](https://microprofile.io/) avec [Open Liberty](https://openliberty.io/).
+- Configurer un fichier _pom.xml_ pour gérer les dépendances [Maven](https://maven.apache.org/).
+- Exécuter un microservice Java en ligne de commande.
 
 ## Étapes à suivre
 
-* Démarrer l'environnement de développement Eclipse.
+- Démarrer l'éditeur [VSCode](https://code.visualstudio.com/ "Visual Studio Code").
 
-* Importer le projet Maven *helloworldrestmicroservice* (**File -> Import -> General -> Existing Maven Projects**, choisir le répertoire du projet puis faire **Finish**).
+- Ouvrir le dossier du projet Maven _helloworldrestmicroservice_ disponible dans le répertoire _workspace_.
 
-* Examiner les différents packages et classes. Vous remarquerez que le projet contient des erreurs de compilation dues à l'absence des dépendances vers [KumuluzEE](https://ee.kumuluz.com/) et indirectement vers [Jersey](https://eclipse-ee4j.github.io/jersey/).
+- Examiner les différents packages et classes. Vous remarquerez que le projet contient des erreurs de compilation dues à l'absence des dépendances vers [Open Liberty](https://openliberty.io/).
 
-* Ouvrir le fichier *pom.xml* et compléter le contenu de la balise `<dependencies>` par les dépendances suivantes.
+- Ouvrir le fichier _pom.xml_ et compléter le contenu de la balise `<dependencies>` par les dépendances suivantes.
 
 ```xml
 ...
-    <dependencies>
-        <dependency>
-            <groupId>com.kumuluz.ee</groupId>
-            <artifactId>kumuluzee-core</artifactId>
-            <version>${kumuluzee.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.kumuluz.ee</groupId>
-            <artifactId>kumuluzee-servlet-jetty</artifactId>
-            <version>${kumuluzee.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.kumuluz.ee</groupId>
-            <artifactId>kumuluzee-jax-rs-jersey</artifactId>
-            <version>${kumuluzee.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.kumuluz.ee</groupId>
-            <artifactId>kumuluzee-cdi-weld</artifactId>
-            <version>${kumuluzee.version}</version>
-        </dependency>
+<dependency>
+    <groupId>jakarta.platform</groupId>
+    <artifactId>jakarta.jakartaee-api</artifactId>
+    <version>${jarkartaee-api.version}</version>
+    <scope>provided</scope>
+</dependency>
+<dependency>
+    <groupId>org.eclipse.microprofile</groupId>
+    <artifactId>microprofile</artifactId>
+    <version>${microprofile.version}</version>
+    <type>pom</type>
+    <scope>provided</scope>
+</dependency>
+...
+```
+
+- Compléter dans la balise `<properties>` le numéro de version de [Jakarta EE](https://jakarta.ee/) et le numéro de version de [MicroProfile](https://microprofile.io/).
+
+```xml
+...
+<properties>
+    <jarkartaee-api.version>10.0.0</jarkartaee-api.version>
+    <microprofile.version>7.0</microprofile.version>
     ...
+</properties>
+...
 ```
 
-* Compléter dans la balise `<properties>` le numéro de version de KumuluzEE.
+Le projet ne contient plus d'erreurs et peut être démarré. Toutefois, [Open Liberty](https://openliberty.io/) a besoin de plugins Maven pour que le projet puisse s'exécuter.
+
+- Au niveau de la balise `<plugins>` ajouter les éléments suivants.
 
 ```xml
-...
-    <properties>
-        <kumuluzee.version>4.0.0</kumuluzee.version>
-        ...
-    </properties>
-...
+<build>
+    <finalName>${project.artifactId}</finalName>
+    <plugins>
+        <plugin>
+            <groupId>io.openliberty.tools</groupId>
+            <artifactId>liberty-maven-plugin</artifactId>
+            <version>3.11.2</version>
+        </plugin>
+        <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-war-plugin</artifactId>
+            <version>3.4.0</version>
+        </plugin>
+    </plugins>
+</build>
 ```
 
-> La version `4.0.0` de [KumuluzEE](https://ee.kumuluz.com/) supporte la version Java 17 LTS et utilise les artefacts JakartaEE en remplacement des artefacts JavaEE. Bien que cette version soit en béta, l'utilisation pour ce tutoriel n'a pas posé de problème. **Il faudra toutefois attendre une version officielle pour une utilisation en production**.
+- Exécuter la commande Maven suivante en se plaçant à la racine du dossier _helloworldrestmicroservice_ :
 
-Désormais le projet ne contient plus d'erreurs et peut être compilé en totalité (Eclipse s'en charge via la compilation incrémentale).
-
-* Pour exécuter le projet depuis Eclipse, créer une configuration d'exécution que vous appellerez *HelloworldRESTMicroservice* et dont la classe principale (Main class) sera `com.kumuluz.ee.EeApplication` puis faire **Run**.
-
-Votre programme s'exécute par l'intermédiaire de [KumuluzEE](https://ee.kumuluz.com/). Pour tester nous pourrions utiliser l'adresse <http://localhost:8080/helloworld>, mais comme le serveur [Redis](https://redis.io/) n'est pas encore opérationnel nous ne pourrons pas à cet instant aller plus loin dans les tests.
-
-* Avant de continuer, arrêter l'exécution du programme depuis le bouton **Terminate** (bouton rouge) de la console Eclipse.
-
-Notre programme Java doit s'exécuter en ligne de commande et non pas depuis Eclipse quand il sera exécuté depuis un conteneur [Docker](https://www.docker.com/). Nous allons donc réaliser une dernière modification sur le fichier *pom.xml* afin de préparer le terrain. Nous allons préciser à Maven que l'on souhaite que toutes les dépendances soient présentes dans le répertoire *target* du projet.
-
-* Ouvrir le fichier *pom.xml*.
-
-* Ajouter dans la balise `<plugins>` le plugin *maven-dependency-plugin* comme montré sur le code suivant.
-
-```xml
-...
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-dependency-plugin</artifactId>
-                <version>${maven-dependency-plugin.version}</version>
-                <executions>
-                    <execution>
-                        <id>copy-dependencies</id>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>copy-dependencies</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-        </plugins>
-    </build>
-</project>
+```bash
+mvn clean liberty:dev
 ```
 
-* Depuis Eclipse, exécuter la configuration d'exécution appelée *all dependencies (package)*. Si vous rencontrez des soucis avec l'intégration Maven sous Eclipse, exécuter la ligne de commande suivante à la racine de votre projet `$ mvn package`. Toutes les dépendances seront copiées par le plugin *maven-dependency-plugin* et localisées dans le répertoire *helloworldrestmicroservice/target/dependency*.
+La sortie console attendue :
 
-* Ouvrir une invite de commande à la racine du projet *helloworldrestmicroservice*, puis exécuter la ligne de commande suivante.
-
-```console
-$ java -cp 'target/classes:target/dependency/*' com.kumuluz.ee.EeApplication
-2022-04-29 08:45:07.643 INFO -- com.kumuluz.ee.configuration.sources.FileConfigurationSource -- Unable to load configuration from file. No configuration files were found.
-2022-04-29 08:45:07.678 INFO -- com.kumuluz.ee.EeApplication -- Initialized configuration source: SystemPropertyConfigurationSource
-2022-04-29 08:45:07.679 INFO -- com.kumuluz.ee.EeApplication -- Initialized configuration source: EnvironmentConfigurationSource
-2022-04-29 08:45:07.679 INFO -- com.kumuluz.ee.EeApplication -- Initialized configuration source: FileConfigurationSource
-2022-04-29 08:45:07.679 INFO -- com.kumuluz.ee.EeApplication -- Initializing KumuluzEE
-2022-04-29 08:45:07.679 INFO -- com.kumuluz.ee.EeApplication -- Checking for requirements
-2022-04-29 08:45:07.681 INFO -- com.kumuluz.ee.EeApplication -- KumuluzEE running in an exploded class and dependency runtime.
+```bash
 ...
+Le serveur defaultServer est prêt pour une planète plus intelligente. Il a démarré en 1,099 secondes..
+[INFO] ************************************************************************
+[INFO] *    Liberty is running in dev mode.
+[INFO] *        Automatic generation of features: [ Off ]
+[INFO] *        h - see the help menu for available actions, type 'h' and press Enter.
+[INFO] *        q - stop the server and quit dev mode, press Ctrl-C or type 'q' and press Enter.
+[INFO] *        
+[INFO] *    Liberty server port information:
+[INFO] *        Liberty server HTTP port: [ 9080 ]
+[INFO] *        Liberty debug port: [ 7777 ]
+[INFO] ************************************************************************
+[INFO] Source compilation was successful.
+[INFO] [AUDIT   ] CWWKT0017I: Application Web supprimée (default_host) : http://192.0.0.2:9080/
+[INFO] [AUDIT   ] CWWKZ0009I: L'application helloworldrestmicroservice s'est arrêtée correctement.
+[INFO] [AUDIT   ] CWWKT0016I: Application Web disponible, (default_host) : http://192.0.0.2:9080/
+[INFO] [AUDIT   ] CWWKZ0003I: Application helloworldrestmicroservice mise à jour en 0,137 secondes.
 ```
+
+Le mode développement (`liberty:dev`) est utilisé et cela permet de coder, déployer, tester et déboguer directement depuis [VSCode](https://code.visualstudio.com/ "Visual Studio Code"). Ce mode ne sera pas utilisé quand le projet sera déployé avec les autres microservices.
+
+Votre programme s'exécute par l'intermédiaire de [Open Liberty](https://openliberty.io/). Pour tester nous pourrions utiliser l'adresse <http://localhost:9080/helloworld>, mais comme le serveur [Redis](https://redis.io/) n'est pas encore opérationnel nous ne pourrons pas à cet instant aller plus loin dans les tests.
+
+- Avant de continuer, arrêter l'exécution du programme (**CTRL+C**).
 
 Votre microservice **Rest** est désormais opérationnel et l'instruction pour la démarrer fonctionne.
 
-* Arrêter l'exécution du programme en faisant simplement un **CTRL-C**.
-
-* Avant de passer à l'exercice suivant qui nous permettra de disposer d'un serveur [Redis](https://redis.io/), essayons de comprendre comment la communication est réalisée entre le microservice **Rest** et le serveur [Redis](https://redis.io/). Ouvrir la classe `fr.mickaelbaron.helloworldrestmicroservice.dao.redis.JedisFactory` et examiner la méthode `URI getRedisURI()`.
+- Avant de passer à l'exercice suivant qui nous permettra de disposer d'un serveur [Redis](https://redis.io/), essayons de comprendre comment la communication est réalisée entre le microservice **Rest** et le serveur [Redis](https://redis.io/). Ouvrir la classe `fr.mickaelbaron.helloworldrestmicroservice.dao.redis.JedisFactory` et examiner la méthode `URI getRedisURI()`.
 
 ```java
+@ApplicationScoped
 public class JedisFactory {
     private static final String REDIS_HOST_ENV = "REDIS_HOST";
 
@@ -126,4 +121,67 @@ public class JedisFactory {
     }
 ```
 
-Vous remarquerez que l'accès à l'hôte de [Redis](https://redis.io/) se fait par une variable d'environnement `REDIS_HOST` (qui sera utilisée plus tard quand le projet sera un microservice) ou se fait via l'adresse `localhost` (pratique pour les tests).
+Vous remarquerez que l'accès à l'hôte de [Redis](https://redis.io/) se fait par une variable d'environnement `REDIS_HOST` ou via l'adresse `localhost`. Ainsi, en dehors d'une nouvelle compilation, le seul moyen de changer l'adresse de [Redis](https://redis.io/) est de passer par des variables d'environnement. La spécification [MicroProfile](https://microprofile.io/) introduit la fonctionnalité [Config](https://github.com/microprofile/microprofile-config), qui permet de gérer la configuration autrement qu'avec des variables d'environnement. Elle prend en charge plusieurs sources de configuration, comme illustré ci-dessous.
+
+![Prioriété des sources de configuration](./images/ordinalpriorities.svg "Prioriété des sources de configuration")
+
+Dans la suite de cet exercice, nous montrons comment activer la fonctionnalité [Config](https://github.com/microprofile/microprofile-config) et comment l'intégrer dans le code.
+
+- Ouvrir le fichier _src/liberty/config/server.xml_ et ajouter la fonctionnalité `mpConfig` à la suite des fonctionnalités déclarées dans la balise `<featureManager>`.
+
+```xml
+<server description="Sample Liberty server">
+    <featureManager>
+        <platform>jakartaee-10.0</platform>
+        <platform>microprofile-7.0</platform>
+        ...
+        <feature>mpConfig</feature>
+    </featureManager>
+    <variable name="http.port" defaultValue="9080" />
+    ...
+</server>
+```
+
+Cela permet d'activer la fonctionnalité [Config](https://github.com/microprofile/microprofile-config).
+
+- Éditer la classe `fr.mickaelbaron.helloworldrestmicroservice.dao.redis.JedisFactory` et modifier par le code suivant :
+
+```java
+@ApplicationScoped
+public class JedisFactory {
+
+    private static final String REDIS_HOST_ENV = "REDIS_HOST";
+
+    private JedisPool jedisPool;
+
+    @Inject
+    @ConfigProperty(name = REDIS_HOST_ENV, defaultValue = "tcp://localhost:6379")
+    private String redisHost;
+
+    @PostConstruct
+    public void init() {
+        URI redisURI = getRedisURI();
+        jedisPool = new JedisPool(new JedisPoolConfig(), redisURI);
+    }
+
+    public Jedis getJedis() {
+        return jedisPool.getResource();
+    }
+
+    private URI getRedisURI() {
+        return URI.create(redisHost);
+    }
+}
+```
+
+L'annotation `@ConfigProperty` permet d'extraire la valeur de `REDIS_HOST` en fonction de la disponibilité des sources de configuration. Si aucune source ne transmet une valeur, c'est la valeur par défaut qui sera choisie. Par ailleurs, vous remarquerez que le constructeur `JedisFactory()` a été remplacé par la méthode `init()` annotée avec `@PostConstruct`. En effet, l'injection de dépendance ne peut se réaliser qu'une fois le constructeur de la classe invoquée.
+
+Le résultat de ce changement sera testé dés que le serveur [Redis](https://redis.io/) sera en fonctionnement.
+
+## Avez-vous bien compris ?
+
+Pour continuer sur les concepts présentés dans cet exercice, nous proposons les expérimentations suivantes :
+
+- mettre en pratique ce projet avec d'autres implémentations de [**MicroProfile**](https://microprofile.io/), comme [**WildFly**](https://www.wildfly.org), ou avec des versions antérieures de la spécification puisque les fonctionnalités utilisées ici sont prises en charge dès la version **MicroProfile 4**.
+
+- passer la valeur du hôte de [Redis](https://redis.io/) autrement que par variable d'environnement (par exemple via une variable introduite dans le fichier _server.xml_ de [Open Liberty](https://openliberty.io/)).

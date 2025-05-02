@@ -1,6 +1,5 @@
 # Build env
-FROM maven:3-jdk-11-slim AS build-java-stage
-LABEL maintainer="Mickael BARON"
+FROM maven:3.9.9-eclipse-temurin-11 AS build-java-stage
 
 ADD pom.xml /work/pom.xml
 WORKDIR /work
@@ -9,10 +8,26 @@ RUN ["mvn", "dependency:go-offline"]
 ADD ["src", "/work/src"]
 RUN ["mvn", "package"]
 
-# Run env
-FROM openjdk:11-jre-slim
-COPY --from=build-java-stage /work/target/classes /classes/
-COPY --from=build-java-stage /work/target/dependency/*.jar /dependency/
+FROM openliberty/open-liberty:kernel-slim-java11-openj9-ubi-minimal
 
-EXPOSE 8080
-ENTRYPOINT ["java", "-cp", "classes:dependency/*", "com.kumuluz.ee.EeApplication"]
+ARG VERSION=1.0
+ARG REVISION=SNAPSHOT
+
+LABEL \
+    org.opencontainers.image.authors="Mickael BARON" \
+    org.opencontainers.image.url="local" \
+    org.opencontainers.image.source="https://github.com/mickaelbaron/microservices-docker-java-tutorial" \
+    org.opencontainers.image.version="$VERSION" \
+    org.opencontainers.image.revision="$REVISION" \
+    vendor="Mickael BARON" \
+    name="rest" \
+    version="$VERSION-$REVISION" \
+    summary="The Rest microservice from the microservices Docker Java tutorial" \
+    description="This image contains the Rest microservice running with the Open Liberty runtime."
+
+COPY --chown=1001:0 --from=build-java-stage /work/src/main/liberty/config/server.xml /config/server.xml
+COPY --chown=1001:0 --from=build-java-stage /work/target/helloworldrestmicroservice.war /config/apps/
+    
+RUN features.sh
+
+RUN configure.sh

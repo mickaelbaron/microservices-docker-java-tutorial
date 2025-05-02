@@ -1,6 +1,9 @@
 package fr.mickaelbaron.helloworldlogmicroservice;
 
 import java.io.IOException;
+import java.net.URISyntaxException;
+import java.security.KeyManagementException;
+import java.security.NoSuchAlgorithmException;
 import java.util.concurrent.TimeoutException;
 
 import com.rabbitmq.client.AMQP;
@@ -18,13 +21,21 @@ public class HelloWorldLogMicroservice {
 
 	public static final String EXCHANGE_NAME = "helloworld";
 
+	private static final int maxAttempts = 5;
+
 	public HelloWorldLogMicroservice(String rabbitMQHosts) throws IOException, TimeoutException, InterruptedException {
 		ConnectionFactory factory = new ConnectionFactory();
-		factory.setHost(rabbitMQHosts);
+		try {
+			factory.setUri(rabbitMQHosts);
+		} catch (KeyManagementException | NoSuchAlgorithmException | URISyntaxException e) {
+			System.out.println("❌ Failed to configure RabbitMQ connection: invalid URI.");
+			e.printStackTrace(); 
+			System.exit(-1);
+		}
 
 		final Connection connection = createConnection(factory);
-//		Connection connection = factory.newConnection();
-		final Channel channel = connection.createChannel(); 
+		//final Connection connection = factory.newConnection();
+		final Channel channel = connection.createChannel();
 
 		channel.exchangeDeclare(EXCHANGE_NAME, "fanout");
 		String queueName = channel.queueDeclare().getQueue();
@@ -42,18 +53,30 @@ public class HelloWorldLogMicroservice {
 	}
 
 	private Connection createConnection(ConnectionFactory factory) throws InterruptedException {
-		// We implement an healthcheck. 
-
+		// We implement an healthcheck.
 		boolean connectionIsReady = false;
 		Connection connection = null;
-		while (!connectionIsReady) {
+		int attempt = 0;
+
+		while (!connectionIsReady && attempt < maxAttempts) {
 			try {
 				connection = factory.newConnection();
 				connectionIsReady = true;
 			} catch (Exception e) {
-				System.out.println("Problem:" + e.getMessage());
-				System.out.println("We will try to connect to RabbitMQ in 5s.");
-				Thread.sleep(5000);
+				attempt++;
+				System.out.println("Attempt " + attempt + " failed: " + e.getMessage());
+				if (attempt < maxAttempts) {
+					System.out.println("Retrying to connect to RabbitMQ in 5s...");
+					try {
+						Thread.sleep(5000);
+					} catch (InterruptedException ie) {
+						Thread.currentThread().interrupt(); // Restore interrupt status
+						break;
+					}
+				} else {
+					System.out.println("Max connection attempts reached. Aborting.");
+					System.exit(-1);
+				}
 			}
 		}
 

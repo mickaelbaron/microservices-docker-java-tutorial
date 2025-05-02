@@ -1,0 +1,15 @@
+<server description="Sample Liberty server">
+    <featureManager>
+        <platform>jakartaee-10.0</platform>
+        <platform>microprofile-7.0</platform>
+        <feature>restfulWS</feature>
+        <feature>cdi</feature>
+        <feature>jsonp</feature>
+        <feature>jsonb</feature>
+        <feature>mpConfig</feature>
+    </featureManager>
+    <variable name="http.port" defaultValue="9080" />
+    <webApplication location="helloworldrestmicroservice.war" contextRoot="/" />
+    <httpEndpoint host="*" httpPort="${http.port}"
+        id="defaultHttpEndpoint" />
+</server>

@@ -1,112 +1,130 @@
-# Exercice 5 : lier les microservices Redis et Rest
+# Exercice 5 : lier les microservices Redis et Rest
 
-À cette étape nous disposons d'un conteneur correspondant au microservice **Redis** et d'une image pour le futur microservice **Rest** dont le code se trouve dans le projet *helloworldrestmicroservice*. Nous allons nous intéresser dans cet exercice à créer le conteneur du microservice **Rest** et lui associer le conteneur du microservice **Redis**. Pour réaliser cette association, nous utilisons des réseaux Docker.
+À cette étape nous disposons d'un conteneur correspondant au microservice **Redis** et d'une image pour le futur microservice **Rest** dont le code se trouve dans le projet _helloworldrestmicroservice_. Nous allons nous intéresser dans cet exercice à créer le conteneur du microservice **Rest** et lui associer le conteneur du microservice **Redis**. Pour réaliser cette association, nous utilisons des réseaux [Docker](https://www.docker.com/).
 
 ## But
 
-* Créer un réseau Docker.
-* Associer un conteneur existant à un réseau Docker.
-* Créer un conteneur en spécifiant un réseau Docker.
-* Définir des variables d'environnement à la création d'un conteneur.
-* Exécuter une commande Linux à partir d'un conteneur en cours.
+- Créer un réseau [Docker](https://www.docker.com/).
+- Associer un conteneur existant à un réseau [Docker](https://www.docker.com/).
+- Créer un conteneur en spécifiant un réseau [Docker](https://www.docker.com/).
+- Définir des variables d'environnement à la création d'un conteneur.
+- Exécuter une commande Linux à partir d'un conteneur en cours.
 
 ## Étapes à suivre
 
-* Créer un réseau Docker appelé *helloworldnetwork* en exécutant la ligne de commande suivante.
+- Créer un réseau [Docker](https://www.docker.com/) appelé _helloworldnetwork_ en exécutant la ligne de commande suivante.
 
-```console
-$ docker network create helloworldnetwork
-ffc205a2246eb4e3b02d138628a1c85d0533504840b772e3f8b5073eefd0c969
+```bash
+docker network create helloworldnetwork
 ```
 
-* Afficher la liste des réseaux Docker afin d'assurer que votre réseau précédent créé à bien été créé.
+- Afficher la liste des réseaux [Docker](https://www.docker.com/) afin d'assurer que votre réseau a bien été créé.
 
-```console
-$ docker network ls
-NETWORK ID     NAME                        DRIVER    SCOPE
-e5cbac22f44e   bridge                      bridge    local
-ffc205a2246e   helloworldnetwork           bridge    local
-6fc763d7ede1   host                        host      local
-8864d55ff2b1   none                        null      local
+```bash
+docker network ls
 ```
 
-Vous remarquerez que des réseaux Docker sont déjà existants (*bridge*, *host* et *none*). Ils sont créés par défaut lors de l'installation de [Docker](https://www.docker.com/). Par exemple le réseau *bridge* est le réseau par défaut. Si aucun réseau n’est spécifié à la construction d’un conteneur, le conteneur se connectera sur le réseau par défaut *bridge*. Le conteneur nommé *redis* créé dans les précédents exercices utilise ce réseau. Les conteneurs connectés sur le réseau par défaut *bridge* se voient tous mais sont **UNIQUEMENT** accessibles en utilisant les IPs (pas les noms). Le réseau par défaut bridge n’est pas **RECOMMANDÉ** pour la mise en production.
+La sortie console attendue :
 
-> Chaque conteneur connecté à un réseau Docker se verra identifié dans ce réseau par son nom. Dans le réseau Docker *helloworldnetwork* le conteneur *redis* sera identifié par *redis*.
-
-* Nous allons connecter le conteneur *redis* précédemment créé au réseau Docker *helloworldnetwork*.
-
-```console
-$ docker network connect helloworldnetwork redis
+```bash
+NETWORK ID     NAME                DRIVER    SCOPE
+c363f85f7abc   bridge              bridge    local
+6d067acad768   helloworldnetwork   bridge    local
+020781e944e9   host                host      local
+021fa4148b09   none                null      local
 ```
 
-> Dans le cas où le conteneur *redis* avait été supprimé, voici la commande pour créer le conteneur en l'attachant directement au réseau Docker *helloworldnetwork, pensez à vous placer à la racine du répertoire _workspace_ : `$ docker run --name redis --network helloworldnetwork -v $(pwd)/data:/data -p 6379:6379 -d redis redis-server --appendonly yes`.
+Vous remarquerez que des réseaux [Docker](https://www.docker.com/) sont déjà existants (_bridge_, _host_ et _none_). Ils sont créés par défaut lors de l'installation de [Docker](https://www.docker.com/). Par exemple le réseau _bridge_ est le réseau par défaut. Si aucun réseau n'est spécifié à la construction d'un conteneur, le conteneur se connectera sur le réseau par défaut _bridge_. Le conteneur nommé _redis_ créé dans les précédents exercices utilise ce réseau. Les conteneurs connectés sur le réseau par défaut _bridge_ se voient tous mais sont **UNIQUEMENT** accessibles en utilisant les IPs (pas les noms). Le réseau par défaut bridge n'est pas **RECOMMANDÉ** pour la mise en production.
 
-* Pour vérifier que le conteneur Redis est bien connecté au réseau Docker *helloworldnetwork* deux (2) solutions sont possibles : en interrogeant soit le conteneur soit le réseau Docker.
+> Chaque conteneur connecté à un réseau [Docker](https://www.docker.com/) se verra identifié dans ce réseau par son nom. Dans le réseau [Docker](https://www.docker.com/) _helloworldnetwork_ le conteneur _redis_ sera identifié par _redis_.
 
-1. Afficher les informations du conteneur *redis* via l'option `inspect`.
+- Nous allons connecter le conteneur _redis_ précédemment créé au réseau Docker _helloworldnetwork_.
 
-```console
-$ docker inspect redis
+```bash
+docker network connect helloworldnetwork redis
+```
+
+- Pour vérifier que le conteneur _redis_ est bien connecté au réseau [Docker](https://www.docker.com/) _helloworldnetwork_ deux (2) solutions sont possibles : en interrogeant le conteneur ou le réseau [Docker](https://www.docker.com/).
+
+- (1) Afficher les informations du conteneur _redis_ via l'option `inspect`.
+
+```bash
+docker inspect redis
+```
+
+La sortie console attendue :
+
+```bash
 ...
             "Networks": {
                 "bridge": {
                     "IPAMConfig": null,
                     "Links": null,
                     "Aliases": null,
-                    "NetworkID": "e5cbac22f44edcef2baa399c2dee4b3e0ac98511bd3f6fff5acf2d49cfe244fe",
-                    "EndpointID": "1b010eafa7df0108520d11b60788a03f8c76f957d1a8d783e40eafcb4a5af58d",
+                    "MacAddress": "86:da:d5:4f:05:16",
+                    "DriverOpts": null,
+                    "GwPriority": 0,
+                    "NetworkID": "c363f85f7abcca1923839e589a48250deb3a19134b44c77146034f3dbb859a73",
+                    "EndpointID": "38a4ad78a8e2c179a20e5a21c45fffcb832776b9896028790eb661734efe1f12",
                     "Gateway": "172.17.0.1",
                     "IPAddress": "172.17.0.2",
                     "IPPrefixLen": 16,
                     "IPv6Gateway": "",
                     "GlobalIPv6Address": "",
                     "GlobalIPv6PrefixLen": 0,
-                    "MacAddress": "02:42:ac:11:00:02",
-                    "DriverOpts": null
+                    "DNSNames": null
                 },
                 "helloworldnetwork": {
                     "IPAMConfig": {},
                     "Links": null,
-                    "Aliases": [
-                        "1a7489cad180"
-                    ],
-                    "NetworkID": "ffc205a2246eb4e3b02d138628a1c85d0533504840b772e3f8b5073eefd0c969",
-                    "EndpointID": "28be01f897cfdf896924f2df805ae7dd7cb67dea5ab1940c1a94455481815da0",
-                    "Gateway": "172.21.0.1",
-                    "IPAddress": "172.21.0.2",
+                    "Aliases": [],
+                    "MacAddress": "9a:ad:b9:48:93:ed",
+                    "DriverOpts": {},
+                    "GwPriority": 0,
+                    "NetworkID": "6d067acad7684439b5a0f57c4e84b764480dd4793ff5544312655f0e809ca714",
+                    "EndpointID": "d3f1e2c511042c4486325b48a41eddf9d6a98d330afd8ad8813219ad4d2b95d6",
+                    "Gateway": "172.18.0.1",
+                    "IPAddress": "172.18.0.2",
                     "IPPrefixLen": 16,
                     "IPv6Gateway": "",
                     "GlobalIPv6Address": "",
                     "GlobalIPv6PrefixLen": 0,
-                    "MacAddress": "02:42:ac:15:00:02",
-                    "DriverOpts": {}
+                    "DNSNames": [
+                        "redis",
+                        "248bfe934963"
+                    ]
                 }
             }
-        }
-    }
-]
+...
 ```
 
-2. Afficher les informations du réseau Docker *helloworldnetwork*.
+Nous vérifions bien que deux réseaux sont associés puisque le conteneur _redis_ a été ajouté à postériori au réseau _helloworldnetwork_.
 
-```console
-$ docker network inspect helloworldnetwork
+- (2) Afficher les informations du réseau [Docker](https://www.docker.com/) _helloworldnetwork_.
+
+```bash
+docker network inspect helloworldnetwork
+```
+
+La sortie console attendue :
+
+```bash
 [
     {
         "Name": "helloworldnetwork",
-        "Id": "ffc205a2246eb4e3b02d138628a1c85d0533504840b772e3f8b5073eefd0c969",
-        "Created": "2022-04-29T20:48:22.0783369Z",
+        "Id": "6d067acad7684439b5a0f57c4e84b764480dd4793ff5544312655f0e809ca714",
+        "Created": "2025-04-26T19:23:08.747523252Z",
         "Scope": "local",
         "Driver": "bridge",
+        "EnableIPv4": true,
         "EnableIPv6": false,
         "IPAM": {
             "Driver": "default",
             "Options": {},
             "Config": [
                 {
-                    "Subnet": "172.21.0.0/16",
-                    "Gateway": "172.21.0.1"
+                    "Subnet": "172.18.0.0/16",
+                    "Gateway": "172.18.0.1"
                 }
             ]
         },
@@ -118,11 +136,11 @@ $ docker network inspect helloworldnetwork
         },
         "ConfigOnly": false,
         "Containers": {
-            "1a7489cad180b8fe33c04cbed90d26bce7a7c5ec8524db324c41362033b7d0fc": {
+            "248bfe9349631c6b46ae0cdd5db1a6ea125a821e7f3f0f4b7c4ae13aa8b4c458": {
                 "Name": "redis",
-                "EndpointID": "28be01f897cfdf896924f2df805ae7dd7cb67dea5ab1940c1a94455481815da0",
-                "MacAddress": "02:42:ac:15:00:02",
-                "IPv4Address": "172.21.0.2/16",
+                "EndpointID": "d3f1e2c511042c4486325b48a41eddf9d6a98d330afd8ad8813219ad4d2b95d6",
+                "MacAddress": "9a:ad:b9:48:93:ed",
+                "IPv4Address": "172.18.0.2/16",
                 "IPv6Address": ""
             }
         },
@@ -132,33 +150,37 @@ $ docker network inspect helloworldnetwork
 ]
 ```
 
-* Créer un conteneur pour le microservice **Rest** en exécutant la ligne de commande suivante.
+- Créer un conteneur pour le microservice **Rest** en exécutant la ligne de commande suivante.
 
-```console
-$ docker run --name rest -p 8080:8080 -d --network helloworldnetwork --env REDIS_HOST=tcp://redis:6379 mickaelbaron/helloworldrestmicroservice
-9bd91396cce2daf4c3d8428f9749202e187bb2c5d5f229ed666f9e565d644117
+```bash
+docker run --name rest -p 9080:9080 -d --network helloworldnetwork --env REDIS_HOST=tcp://redis:6379 mickaelbaron/helloworldrestmicroservice
 ```
 
-Cette instruction crée un conteneur Docker appelé **Rest** (`--name rest`), dont le port `8080` est redirigé sur le port `8080` du hôte (`-p 8080:8080`), lancé en tâche de fond (`-d`), connecté au réseau Docker `helloworldnetwork` à partir de l'image appelée *mickaelbaron/helloworldrestmicroservice*. Enfin, l'option `--env REDIS_HOST=tcp://redis:6379` permet de créer une variable d'environnement lors de la création du conteneur. Cette variable utilisée dans notre projet *helloworldrestmicroservice* sert à identifer l'accès au serveur Redis. Ici la valeur donnée est `redis` puisque les conteneurs dans un réseau Docker sont identifiés par leur nom de création.
+Cette instruction crée un conteneur Docker appelé **Rest** (`--name rest`), dont le port `9080` est redirigé sur le port `9080` du hôte (`-p 9080:9080`), lancé en tâche de fond (`-d`), connecté au réseau [Docker](https://www.docker.com/) `helloworldnetwork` à partir de l'image appelée _mickaelbaron/helloworldrestmicroservice_. Enfin, l'option `--env REDIS_HOST=tcp://redis:6379` permet de créer une variable d'environnement lors de la création du conteneur. Cette variable utilisée dans notre projet _helloworldrestmicroservice_ sert à identifer l'accès au serveur [Redis](https://redis.io/). Ici la valeur donnée est `redis` puisque les conteneurs dans un réseau Docker sont identifiés par leur nom de création.
 
-* Assurons-nous que les deux conteneurs *redis* et *rest* sont connectés dans le réseau Docker *helloworldnetwork*.
+- Assurons-nous que les deux conteneurs _redis_ et _rest_ sont connectés dans le réseau Docker _helloworldnetwork_.
 
-```console
-$ docker network inspect helloworldnetwork
+```bash
+docker network inspect helloworldnetwork
+```
+
+La sortie console attendue :
+
+```bash
 ...
         "Containers": {
-            "1a7489cad180b8fe33c04cbed90d26bce7a7c5ec8524db324c41362033b7d0fc": {
+            "248bfe9349631c6b46ae0cdd5db1a6ea125a821e7f3f0f4b7c4ae13aa8b4c458": {
                 "Name": "redis",
-                "EndpointID": "28be01f897cfdf896924f2df805ae7dd7cb67dea5ab1940c1a94455481815da0",
-                "MacAddress": "02:42:ac:15:00:02",
-                "IPv4Address": "172.21.0.2/16",
+                "EndpointID": "d3f1e2c511042c4486325b48a41eddf9d6a98d330afd8ad8813219ad4d2b95d6",
+                "MacAddress": "9a:ad:b9:48:93:ed",
+                "IPv4Address": "172.18.0.2/16",
                 "IPv6Address": ""
             },
-            "9bd91396cce2daf4c3d8428f9749202e187bb2c5d5f229ed666f9e565d644117": {
+            "4f9f5b5f89caa6d9821b36aacb4835d2d093ff707349cde21875a66c173d0ffa": {
                 "Name": "rest",
-                "EndpointID": "a542d1fffc6f5e1bbf2ec3caadf47a23bb1e4da119ef7b1dd662dc72951c29c4",
-                "MacAddress": "02:42:ac:15:00:03",
-                "IPv4Address": "172.21.0.3/16",
+                "EndpointID": "1a3bfdb36058eef0da8904d3459ea6f4b72f5ad8b0ec50cc19cbf58519b84fa9",
+                "MacAddress": "6e:3a:d4:4f:51:58",
+                "IPv4Address": "172.18.0.3/16",
                 "IPv6Address": ""
             }
         },
@@ -168,26 +190,40 @@ $ docker network inspect helloworldnetwork
 ]
 ```
 
-* Vérifions également que depuis le conteneur *rest* le dialogue peut s'opérer via le conteneur *redis*, exécuter la ligne de commande suivante.
+- Vérifions également que depuis le conteneur _rest_ le dialogue peut s'opérer via le conteneur _redis_, exécuter la ligne de commande suivante.
 
-```console
-$ docker exec -it rest /bin/sh -c 'apt-get update && apt-get -y install iputils-ping && ping redis'
-PING redis (172.19.0.2): 56 data bytes
-64 bytes from 172.19.0.2: icmp_seq=0 ttl=64 time=0.115 ms
-64 bytes from 172.19.0.2: icmp_seq=1 ttl=64 time=0.213 ms
-64 bytes from 172.19.0.2: icmp_seq=2 ttl=64 time=0.212 ms
+```bash
+docker exec -it rest /bin/sh -c 'ping redis'
+```
+
+La sortie console attendue :
+
+```
+PING redis (172.18.0.2) 56(84) bytes of data.
+64 bytes from redis.helloworldnetwork (172.18.0.2): icmp_seq=1 ttl=64 time=0.041 ms
+64 bytes from redis.helloworldnetwork (172.18.0.2): icmp_seq=2 ttl=64 time=0.164 ms
+64 bytes from redis.helloworldnetwork (172.18.0.2): icmp_seq=3 ttl=64 time=0.138 ms
+64 bytes from redis.helloworldnetwork (172.18.0.2): icmp_seq=4 ttl=64 time=0.141 ms
+64 bytes from redis.helloworldnetwork (172.18.0.2): icmp_seq=5 ttl=64 time=0.157 ms
+64 bytes from redis.helloworldnetwork (172.18.0.2): icmp_seq=6 ttl=64 time=0.230 ms
 ...
 ```
 
-Comme nous disposons d'une image minimaliste pour le microservice **Rest**, la plupart des outils réseaux ne sont pas installés. Il est donc nécessaire d'installer l'utilitaire **ping** avant de l'utiliser.
+> L'outil **ping** avait été installé lors de la construction de l'image puisque cet outil n'était pas disponible sur l'image de base.
 
-* Il nous reste plus qu'à tester le service web contenu dans le conteneur *rest*. Exécuter les deux lignes de commandes suivantes afin de poster un message « HelloWorld » et de récupérer les messages « HelloWorld » envoyés.
+- Il nous reste plus qu'à tester le service web contenu dans le conteneur _rest_. Exécuter les deux lignes de commandes suivantes afin de poster un message « HelloWorld » et de récupérer les messages « HelloWorld » envoyés.
 
-```console
-# Création d'un message « HelloWorld » à partir d'un contenu JSON
-$ curl -H "Content-Type: application/json" -X POST -d '{"message":"Mon HelloWorld"}' http://localhost:8080/helloworld
+```bash
+# Création d'un message « HelloWorld » à partir d'un contenu JSON
+curl -H "Content-Type: application/json" -X POST -d '{"message":"Mon HelloWorld"}' http://localhost:9080/helloworld
 
-# Lister les messages « HelloWorld »
-$ curl http://localhost:8080/helloworld
-[{"rid":2,"message":"Mon HelloWorld","startDate":"Mon May 09 12:58:56 UTC 2022"},{"rid":1,"message":"Mon HelloWorld","startDate":"Mon May 09 14:26:39 CEST 2022"}]
+# Lister les messages « HelloWorld »
+curl http://localhost:9080/helloworld
+[{"message":"Mon HelloWorld","rid":2,"startDate":"Wed Apr 23 13:33:51 CEST 2025"},{"message":"Mon HelloWorld","rid":1,"startDate":"Wed Apr 23 13:33:37 CEST 2025"}]
 ```
+
+## Avez-vous bien compris ?
+
+Pour continuer sur les concepts présentés dans cet exercice, nous proposons l'expérimentation suivante :
+
+- créer des conteneurs _rest_ basés sur les images `mickaelbaron/helloworldrestmicroservic:slim` et `mickaelbaron/helloworldrestmicroservice:msb`.

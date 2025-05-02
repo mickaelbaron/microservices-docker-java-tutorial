@@ -4,11 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import javax.inject.Inject;
-import javax.inject.Named;
-
 import fr.mickaelbaron.helloworldrestmicroservice.dao.IHelloWorldDAO;
 import fr.mickaelbaron.helloworldrestmicroservice.model.HelloWorld;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
+import jakarta.inject.Named;
 import redis.clients.jedis.Jedis;
 
 /**
@@ -19,6 +19,7 @@ import redis.clients.jedis.Jedis;
  * Improvements: used Redis pipeline.
  */
 @Named("redis")
+@ApplicationScoped
 public class HelloWorldDAORedisImpl implements IHelloWorldDAO {
 
 	@Inject
