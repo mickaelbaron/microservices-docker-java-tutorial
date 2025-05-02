@@ -2,8 +2,7 @@ package fr.mickaelbaron.helloworldrestmicroservice.dao.redis;
 
 import java.net.URI;
 
-import javax.inject.Singleton;
-
+import jakarta.enterprise.context.ApplicationScoped;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.JedisPoolConfig;
@@ -11,7 +10,7 @@ import redis.clients.jedis.JedisPoolConfig;
 /**
  * @author Mickael BARON (baron.mickael@gmail.com)
  */
-@Singleton
+@ApplicationScoped
 public class JedisFactory {
 
 	private static final String REDIS_HOST_ENV = "REDIS_HOST";
@@ -20,7 +19,6 @@ public class JedisFactory {
 
 	public JedisFactory() {
 		URI redisURI = getRedisURI();
-		System.out.println(redisURI);
 		jedisPool = new JedisPool(new JedisPoolConfig(), redisURI);
 	}
 
@@ -30,7 +28,6 @@ public class JedisFactory {
 
 	private URI getRedisURI() {
 		String redisHost = System.getenv(REDIS_HOST_ENV);
-		System.out.println(redisHost);
 		return URI.create(redisHost != null && !redisHost.isEmpty() ? redisHost : "tcp://localhost:6379");
 	}
 }

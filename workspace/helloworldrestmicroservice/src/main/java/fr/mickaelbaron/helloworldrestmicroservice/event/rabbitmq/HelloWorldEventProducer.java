@@ -2,16 +2,19 @@ package fr.mickaelbaron.helloworldrestmicroservice.event.rabbitmq;
 
 import java.io.IOException;
 
-import javax.inject.Inject;
-
 import com.google.gson.Gson;
 
 import fr.mickaelbaron.helloworldrestmicroservice.event.IHelloWorldEventProducer;
 import fr.mickaelbaron.helloworldrestmicroservice.model.HelloWorld;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
+import jakarta.inject.Named;
 
 /**
  * @author Mickael BARON (baron.mickael@gmail.com)
  */
+@Named("rabbitmq")
+@ApplicationScoped
 public class HelloWorldEventProducer implements IHelloWorldEventProducer {
 
 	@Inject

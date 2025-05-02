@@ -9,7 +9,8 @@ import org.apache.commons.beanutils.BeanUtilsBean;
 /**
  * @author Mickael BARON (baron.mickael@gmail.com)
  *
- * Based on: https://github.com/fjunior87/JedisCrud/blob/master/src/com/xicojunior/jediscrud/util/BeanUtil.java
+ *         Based on:
+ *         https://github.com/fjunior87/JedisCrud/blob/master/src/com/xicojunior/jediscrud/util/BeanUtil.java
  */
 public class BeanUtil {
 
