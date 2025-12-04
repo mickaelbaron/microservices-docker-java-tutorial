@@ -1,5 +1,5 @@
 # Build env
-FROM node:slim as build-npm-stage
+FROM node:slim AS build-npm-stage
 LABEL maintainer="Mickael BARON"
 
 WORKDIR /web
