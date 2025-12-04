@@ -2,6 +2,7 @@ package fr.mickaelbaron.helloworldrestmicroservice.dao.redis;
 
 import java.net.URI;
 
+import jakarta.annotation.PostConstruct;
 import jakarta.enterprise.context.ApplicationScoped;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
@@ -17,7 +18,8 @@ public class JedisFactory {
 
 	private JedisPool jedisPool;
 
-	public JedisFactory() {
+	@PostConstruct
+	public void init() {
 		URI redisURI = getRedisURI();
 		jedisPool = new JedisPool(new JedisPoolConfig(), redisURI);
 	}

@@ -7,15 +7,12 @@ import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
 import java.util.concurrent.TimeoutException;
 
-import org.eclipse.microprofile.config.inject.ConfigProperty;
-
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.ConnectionFactory;
 
 import jakarta.annotation.PostConstruct;
 import jakarta.enterprise.context.ApplicationScoped;
-import jakarta.inject.Inject;
 
 /**
  * @author Mickael BARON (baron.mickael@gmail.com)
@@ -28,10 +25,6 @@ public class RabbitMQFactory {
 	public static final String EXCHANGE_NAME = "helloworld";
 
 	private Channel currentChanel;
-
-	@Inject
-	@ConfigProperty(name = RABBITMQ_HOST_ENV)
-	private String rabbitmqHost;
 
 	@PostConstruct
 	public void init() {
@@ -53,8 +46,8 @@ public class RabbitMQFactory {
 	}
 
 	private URI getRedisURI() {
-		String hostValue = rabbitmqHost != null && !rabbitmqHost.isEmpty() ? rabbitmqHost
-				: "amqp://localhost:5672";
-		return URI.create(hostValue);
+		String rabbitmqHost = System.getenv(RABBITMQ_HOST_ENV);
+		return URI.create(rabbitmqHost != null && !rabbitmqHost.isEmpty() ? rabbitmqHost : "amqp://localhost:5672");
 	}
+
 }

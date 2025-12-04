@@ -114,69 +114,14 @@ Votre microservice **Rest** est désormais opérationnel et l'instruction pour l
 @ApplicationScoped
 public class JedisFactory {
     private static final String REDIS_HOST_ENV = "REDIS_HOST";
-
+    ...
     private URI getRedisURI() {
         String redisHost = System.getenv(REDIS_HOST_ENV);
         return URI.create(redisHost != null && !redisHost.isEmpty() ? redisHost : "tcp://localhost:6379");
     }
 ```
 
-Vous remarquerez que l'accès à l'hôte de [Redis](https://redis.io/) se fait par une variable d'environnement `REDIS_HOST` ou via l'adresse `localhost`. Ainsi, en dehors d'une nouvelle compilation, le seul moyen de changer l'adresse de [Redis](https://redis.io/) est de passer par des variables d'environnement. La spécification [MicroProfile](https://microprofile.io/) introduit la fonctionnalité [Config](https://github.com/microprofile/microprofile-config), qui permet de gérer la configuration autrement qu'avec des variables d'environnement. Elle prend en charge plusieurs sources de configuration, comme illustré ci-dessous.
-
-![Prioriété des sources de configuration](./images/ordinalpriorities.svg "Prioriété des sources de configuration")
-
-Dans la suite de cet exercice, nous montrons comment activer la fonctionnalité [Config](https://github.com/microprofile/microprofile-config) et comment l'intégrer dans le code.
-
-- Ouvrir le fichier _src/liberty/config/server.xml_ et ajouter la fonctionnalité `mpConfig` à la suite des fonctionnalités déclarées dans la balise `<featureManager>`.
-
-```xml
-<server description="Sample Liberty server">
-    <featureManager>
-        <platform>jakartaee-10.0</platform>
-        <platform>microprofile-7.0</platform>
-        ...
-        <feature>mpConfig</feature>
-    </featureManager>
-    <variable name="http.port" defaultValue="9080" />
-    ...
-</server>
-```
-
-Cela permet d'activer la fonctionnalité [Config](https://github.com/microprofile/microprofile-config).
-
-- Éditer la classe `fr.mickaelbaron.helloworldrestmicroservice.dao.redis.JedisFactory` et modifier par le code suivant :
-
-```java
-@ApplicationScoped
-public class JedisFactory {
-
-    private static final String REDIS_HOST_ENV = "REDIS_HOST";
-
-    private JedisPool jedisPool;
-
-    @Inject
-    @ConfigProperty(name = REDIS_HOST_ENV, defaultValue = "tcp://localhost:6379")
-    private String redisHost;
-
-    @PostConstruct
-    public void init() {
-        URI redisURI = getRedisURI();
-        jedisPool = new JedisPool(new JedisPoolConfig(), redisURI);
-    }
-
-    public Jedis getJedis() {
-        return jedisPool.getResource();
-    }
-
-    private URI getRedisURI() {
-        return URI.create(redisHost);
-    }
-}
-```
-
-L'annotation `@ConfigProperty` permet d'extraire la valeur de `REDIS_HOST` en fonction de la disponibilité des sources de configuration. Si aucune source ne transmet une valeur, c'est la valeur par défaut qui sera choisie. Par ailleurs, vous remarquerez que le constructeur `JedisFactory()` a été remplacé par la méthode `init()` annotée avec `@PostConstruct`. En effet, l'injection de dépendance ne peut se réaliser qu'une fois le constructeur de la classe invoquée.
-
-Le résultat de ce changement sera testé dés que le serveur [Redis](https://redis.io/) sera en fonctionnement.
+Vous remarquerez que l'accès à l'hôte de [Redis](https://redis.io/) se fait par une variable d'environnement `REDIS_HOST` ou via l'adresse `localhost`. Ainsi, en dehors d'une nouvelle compilation, le seul moyen de changer l'adresse de [Redis](https://redis.io/) est de passer par des variables d'environnement. 
 
 ## Avez-vous bien compris ?
 

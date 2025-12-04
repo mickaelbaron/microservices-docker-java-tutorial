@@ -33,7 +33,7 @@ LABEL \
 
 USER root
 
-ENV MAVEN_VERSION=3.9.9
+ENV MAVEN_VERSION=3.9.11
 RUN yum install iputils -y && curl -fsSLk https://dlcdn.apache.org/maven/maven-3/$MAVEN_VERSION/binaries/apache-maven-$MAVEN_VERSION-bin.tar.gz | tar xzf - -C /usr/share \
     && mv /usr/share/apache-maven-$MAVEN_VERSION /usr/share/maven \
     && ln -s /usr/share/maven/bin/mvn /usr/bin/mvn
@@ -88,32 +88,32 @@ docker build -t mickaelbaron/helloworldrestmicroservice .
 La sortie console attendue :
 
 ```bash
-[+] Building 35.2s (14/14) FINISHED                                                                                      docker:desktop-linux
- => [internal] load build definition from Dockerfile                                                                                     0.0s
- => => transferring dockerfile: 1.47kB                                                                                                   0.0s
- => [internal] load metadata for docker.io/openliberty/open-liberty:full-java11-openj9-ubi                                               0.0s
- => [internal] load .dockerignore                                                                                                        0.0s
- => => transferring context: 2B                                                                                                          0.0s
- => [1/9] FROM docker.io/openliberty/open-liberty:full-java11-openj9-ubi@sha256:...                                                      0.1s
- => => resolve docker.io/openliberty/open-liberty:full-java11-openj9-ubi@sha256:...                                                      0.0s
- => [internal] load build context                                                                                                        0.0s
- => => transferring context: 83.83kB                                                                                                     0.0s
- => [2/9] RUN yum install iputils -y && curl -fsSLk https://dlcdn.apache.org/maven/maven-3/3.9.9/binaries/apache-maven-3.9.9-bin.tar.gz  2.6s
- => [3/9] ADD pom.xml /work/pom.xml                                                                                                      0.0s
- => [4/9] WORKDIR /work                                                                                                                  0.0s
- => [5/9] RUN ["mvn", "dependency:go-offline"]                                                                                          24.1s
- => [6/9] ADD [src, /work/src]                                                                                                           0.0s
- => [7/9] RUN ["mvn", "package"]                                                                                                         1.3s
- => [8/9] RUN mv src/main/liberty/config/server.xml /config/server.xml && chown 1001:0 /config/server.xml && ...                         0.1s
- => [9/9] RUN configure.sh                                                                                                               5.1s
- => exporting to image                                                                                                                   1.7s
- => => exporting layers                                                                                                                  1.2s
- => => exporting manifest sha256:7f59b36117a1a4187a3b529d211d24bf0e809c57568c2b8ca82a713da58921e0                                        0.0s
- => => exporting config sha256:79a3a033db2c245ba8fea87282d9b8d6fe107eb16b77cb3fcf91e81164396181                                          0.0s
- => => exporting attestation manifest sha256:6d7bd0cf00586f19b70f01bbbc04b0a10ae5a74b311bbf9a4885e91663e83336                            0.0s
- => => exporting manifest list sha256:94122594de6a0d0153657f0396013e832d56887505c9143be59f965be497a00d                                   0.0s
- => => naming to docker.io/mickaelbaron/helloworldrestmicroservice:latest                                                                0.0s
- => => unpacking to docker.io/mickaelbaron/helloworldrestmicroservice:latest                                                             0.5s
+[+] Building 35.2s (14/14) FINISHED                                                                                        docker:desktop-linux
+ => [internal] load build definition from Dockerfile                                                                                       0.0s
+ => => transferring dockerfile: 1.47kB                                                                                                     0.0s
+ => [internal] load metadata for docker.io/openliberty/open-liberty:full-java11-openj9-ubi                                                 0.0s
+ => [internal] load .dockerignore                                                                                                          0.0s
+ => => transferring context: 2B                                                                                                            0.0s
+ => [1/9] FROM docker.io/openliberty/open-liberty:full-java11-openj9-ubi@sha256:...                                                        0.1s
+ => => resolve docker.io/openliberty/open-liberty:full-java11-openj9-ubi@sha256:...                                                        0.0s
+ => [internal] load build context                                                                                                          0.0s
+ => => transferring context: 83.83kB                                                                                                       0.0s
+ => [2/9] RUN yum install iputils -y && curl -fsSLk https://dlcdn.apache.org/maven/maven-3/3.9.11/binaries/apache-maven-3.9.11-bin.tar.gz  2.6s
+ => [3/9] ADD pom.xml /work/pom.xml                                                                                                        0.0s
+ => [4/9] WORKDIR /work                                                                                                                    0.0s
+ => [5/9] RUN ["mvn", "dependency:go-offline"]                                                                                            24.1s
+ => [6/9] ADD [src, /work/src]                                                                                                             0.0s
+ => [7/9] RUN ["mvn", "package"]                                                                                                           1.3s
+ => [8/9] RUN mv src/main/liberty/config/server.xml /config/server.xml && chown 1001:0 /config/server.xml && ...                           0.1s
+ => [9/9] RUN configure.sh                                                                                                                 5.1s
+ => exporting to image                                                                                                                     1.7s
+ => => exporting layers                                                                                                                    1.2s
+ => => exporting manifest sha256:7f59b36117a1a4187a3b529d211d24bf0e809c57568c2b8ca82a713da58921e0                                          0.0s
+ => => exporting config sha256:79a3a033db2c245ba8fea87282d9b8d6fe107eb16b77cb3fcf91e81164396181                                            0.0s
+ => => exporting attestation manifest sha256:6d7bd0cf00586f19b70f01bbbc04b0a10ae5a74b311bbf9a4885e91663e83336                              0.0s
+ => => exporting manifest list sha256:94122594de6a0d0153657f0396013e832d56887505c9143be59f965be497a00d                                     0.0s
+ => => naming to docker.io/mickaelbaron/helloworldrestmicroservice:latest                                                                  0.0s
+ => => unpacking to docker.io/mickaelbaron/helloworldrestmicroservice:latest                                                               0.5s
 ```
 
 > Remarquer le téléchargement des dépendances Java (les fichiers Jar) réalisées après la commande `mvn dependency:go-offline`.
@@ -155,7 +155,7 @@ IMAGE          CREATED         CREATED BY                                      S
 <missing>      9 minutes ago   ADD pom.xml /work/pom.xml # buildkit            12.3kB    buildkit.dockerfile.v0
 <missing>      9 minutes ago   ENV MAVEN_HOME=/usr/share/maven                 0B        buildkit.dockerfile.v0
 <missing>      9 minutes ago   RUN |2 VERSION=1.0 REVISION=SNAPSHOT /bin/sh…   27.1MB    buildkit.dockerfile.v0
-<missing>      9 minutes ago   ENV MAVEN_VERSION=3.9.9                         0B        buildkit.dockerfile.v0
+<missing>      9 minutes ago   ENV MAVEN_VERSION=3.9.11                        0B        buildkit.dockerfile.v0
 <missing>      9 minutes ago   USER root                                       0B        buildkit.dockerfile.v0
 <missing>      9 minutes ago   LABEL org.opencontainers.image.authors=Micka…   0B        buildkit.dockerfile.v0
 <missing>      9 minutes ago   ARG REVISION=SNAPSHOT                           0B        buildkit.dockerfile.v0
@@ -184,32 +184,32 @@ docker build -t mickaelbaron/helloworldrestmicroservice .
 La sortie console attendue :
 
 ```bash
-[+] Building 6.2s (14/14) FINISHED                                                                                                                 docker:desktop-linux
- => [internal] load build definition from Dockerfile                                                                                               0.0s
- => => transferring dockerfile: 1.47kB                                                                                                             0.0s
- => [internal] load metadata for docker.io/openliberty/open-liberty:full-java11-openj9-ubi                                                         0.0s
- => [internal] load .dockerignore                                                                                                                  0.0s
- => => transferring context: 2B                                                                                                                    0.0s
- => [1/9] FROM docker.io/openliberty/open-liberty:full-java11-openj9-ubi@sha256:...                                                                0.0s
- => => resolve docker.io/openliberty/open-liberty:full-java11-openj9-ubi@sha256:...                                                                0.0s
- => [internal] load build context                                                                                                                  0.0s
- => => transferring context: 5.66kB                                                                                                                0.0s
- => CACHED [2/9] RUN yum install iputils -y && curl -fsSLk https://dlcdn.apache.org/maven/maven-3/3.9.9/binaries/apache-maven-3.9.9-bin.tar.gz ... 0.0s
- => CACHED [3/9] ADD pom.xml /work/pom.xml                                                                                                         0.0s
- => CACHED [4/9] WORKDIR /work                                                                                                                     0.0s
- => CACHED [5/9] RUN ["mvn", "dependency:go-offline"]                                                                                              0.0s
- => [6/9] ADD [src, /work/src]                                                                                                                     0.0s
- => [7/9] RUN ["mvn", "package"]                                                                                                                   1.3s
- => [8/9] RUN mv src/main/liberty/config/server.xml /config/server.xml && chown 1001:0 /config/server.xml ...                                      0.1s
- => [9/9] RUN configure.sh                                                                                                                         4.1s
- => exporting to image                                                                                                                             0.5s
- => => exporting layers                                                                                                                            0.3s
- => => exporting manifest sha256:adf19d98a8ed9a8d65a5f62566dde78c70f76b325c3f91e0875ee69155240e80                                                  0.0s
- => => exporting config sha256:24fac79eefe153f102a9daf0a9b3416c13360761f6147354a237c756f0c57794                                                    0.0s
- => => exporting attestation manifest sha256:34a6c34730708ac193f8ac2a7375798fd56f0a4016bc734d5c370e8299c36689                                      0.0s
- => => exporting manifest list sha256:65d5e6f40787fe45afecea8b6fa465edef92454602f2f3363680d996d79dfce3                                             0.0s
- => => naming to docker.io/mickaelbaron/helloworldrestmicroservice:latest                                                                          0.0s
- => => unpacking to docker.io/mickaelbaron/helloworldrestmicroservice:latest                                                                       0.1s
+[+] Building 6.2s (14/14) FINISHED                                                                                                                   docker:desktop-linux
+ => [internal] load build definition from Dockerfile                                                                                                 0.0s
+ => => transferring dockerfile: 1.47kB                                                                                                               0.0s
+ => [internal] load metadata for docker.io/openliberty/open-liberty:full-java11-openj9-ubi                                                           0.0s
+ => [internal] load .dockerignore                                                                                                                    0.0s
+ => => transferring context: 2B                                                                                                                      0.0s
+ => [1/9] FROM docker.io/openliberty/open-liberty:full-java11-openj9-ubi@sha256:...                                                                  0.0s
+ => => resolve docker.io/openliberty/open-liberty:full-java11-openj9-ubi@sha256:...                                                                  0.0s
+ => [internal] load build context                                                                                                                    0.0s
+ => => transferring context: 5.66kB                                                                                                                  0.0s
+ => CACHED [2/9] RUN yum install iputils -y && curl -fsSLk https://dlcdn.apache.org/maven/maven-3/3.9.11/binaries/apache-maven-3.9.11-bin.tar.gz ... 0.0s
+ => CACHED [3/9] ADD pom.xml /work/pom.xml                                                                                                           0.0s
+ => CACHED [4/9] WORKDIR /work                                                                                                                       0.0s
+ => CACHED [5/9] RUN ["mvn", "dependency:go-offline"]                                                                                                0.0s
+ => [6/9] ADD [src, /work/src]                                                                                                                       0.0s
+ => [7/9] RUN ["mvn", "package"]                                                                                                                     1.3s
+ => [8/9] RUN mv src/main/liberty/config/server.xml /config/server.xml && chown 1001:0 /config/server.xml ...                                        0.1s
+ => [9/9] RUN configure.sh                                                                                                                           4.1s
+ => exporting to image                                                                                                                               0.5s
+ => => exporting layers                                                                                                                              0.3s
+ => => exporting manifest sha256:adf19d98a8ed9a8d65a5f62566dde78c70f76b325c3f91e0875ee69155240e80                                                    0.0s
+ => => exporting config sha256:24fac79eefe153f102a9daf0a9b3416c13360761f6147354a237c756f0c57794                                                      0.0s
+ => => exporting attestation manifest sha256:34a6c34730708ac193f8ac2a7375798fd56f0a4016bc734d5c370e8299c36689                                        0.0s
+ => => exporting manifest list sha256:65d5e6f40787fe45afecea8b6fa465edef92454602f2f3363680d996d79dfce3                                               0.0s
+ => => naming to docker.io/mickaelbaron/helloworldrestmicroservice:latest                                                                            0.0s
+ => => unpacking to docker.io/mickaelbaron/helloworldrestmicroservice:latest                                                                         0.1s
 ```
 
 Vous noterez que la construction de l'image se fait plus rapidement, car les étapes précédant `mvn dependency:go-offline` sont en cache.
@@ -238,7 +238,7 @@ LABEL \
 
 USER root
 
-ENV MAVEN_VERSION=3.9.9
+ENV MAVEN_VERSION=3.9.11
 RUN curl -fsSLk https://dlcdn.apache.org/maven/maven-3/$MAVEN_VERSION/binaries/apache-maven-$MAVEN_VERSION-bin.tar.gz | tar xzf - -C /usr/share \
     && mv /usr/share/apache-maven-$MAVEN_VERSION /usr/share/maven \
     && ln -s /usr/share/maven/bin/mvn /usr/bin/mvn
@@ -287,7 +287,7 @@ Pour résoudre ces problèmes, nous allons utiliser le _Multi-Stage Build_ qui p
 
 ```yaml
 # Build env
-FROM maven:3.9.9-eclipse-temurin-11 AS build-java-stage
+FROM maven:3.9.11-eclipse-temurin-11 AS build-java-stage
 
 ADD pom.xml /work/pom.xml
 WORKDIR /work
@@ -340,36 +340,36 @@ docker build -t mickaelbaron/helloworldrestmicroservice:msb -f DockerfileMSB .
 ```
 
 ```bash
-[+] Building 35.9s (17/17) FINISHED                                                                                             docker:desktop-linux
- => [internal] load build definition from DockerfileMSB                                                                         0.0s
- => => transferring dockerfile: 1.21kB                                                                                          0.0s
- => [internal] load metadata for docker.io/openliberty/open-liberty:kernel-slim-java11-openj9-ubi-minimal                       0.0s
- => [internal] load metadata for docker.io/library/maven:3.9.9-eclipse-temurin-11                                               0.4s
- => [internal] load .dockerignore                                                                                               0.0s
- => => transferring context: 2B                                                                                                 0.0s
- => CACHED [build-java-stage 1/6] FROM docker.io/library/maven:3.9.9-eclipse-temurin-11@sha256:c83c4bc77fd7217445c66f5da8fdf8ec 0.0s
- => => resolve docker.io/library/maven:3.9.9-eclipse-temurin-11@sha256:c83c4bc77fd7217445c66f5da8fdf8ec4cfeaa2e3e0d8acb65a4b2b7 0.0s
- => CACHED [stage-1 1/5] FROM docker.io/openliberty/open-liberty:kernel-slim-java11-openj9-ubi-minimal@sha256:7ce09d7f1e0ed03c3 0.0s
- => => resolve docker.io/openliberty/open-liberty:kernel-slim-java11-openj9-ubi-minimal@sha256:7ce09d7f1e0ed03c3d9cc3570e9e55df 0.0s
- => [internal] load build context                                                                                               0.0s
- => => transferring context: 4.43kB                                                                                             0.0s
- => [build-java-stage 2/6] ADD pom.xml /work/pom.xml                                                                            0.0s
- => [build-java-stage 3/6] WORKDIR /work                                                                                        0.0s
- => [build-java-stage 4/6] RUN ["mvn", "dependency:go-offline"]                                                                18.8s
- => [build-java-stage 5/6] ADD [src, /work/src]                                                                                 0.0s
- => [build-java-stage 6/6] RUN ["mvn", "package"]                                                                               1.2s
- => [stage-1 2/5] COPY --chown=1001:0 --from=build-java-stage /work/src/main/liberty/config/server.xml /config/server.xml       0.0s
- => [stage-1 3/5] COPY --chown=1001:0 --from=build-java-stage /work/target/helloworldrestmicroservice.war /config/apps/         0.0s
- => [stage-1 4/5] RUN features.sh                                                                                               7.3s
- => [stage-1 5/5] RUN configure.sh                                                                                              7.1s
- => exporting to image                                                                                                          0.7s
- => => exporting layers                                                                                                         0.5s
- => => exporting manifest sha256:c8abe5568bc50407abb34755d4edb753ff9710bcf1e7f6be9a2f25edae611c91                               0.0s
- => => exporting config sha256:f6a360b4df6bd8ef809f28a3c470d09d3741abee53ee1fd01e3dd4eee92ee3ac                                 0.0s
- => => exporting attestation manifest sha256:dec79cd7cab8c1fcd447be4f22136099fa71f39564895af23e0778bb88d208cc                   0.0s
- => => exporting manifest list sha256:04ed03073f40bc910a1e094a1b155f6b5f12fec2cb1dd7aa066164333b7defbc                          0.0s
- => => naming to docker.io/mickaelbaron/helloworldrestmicroservice:msb                                                          0.0s
- => => unpacking to docker.io/mickaelbaron/helloworldrestmicroservice:msb                                                       0.2s
+[+] Building 35.9s (17/17) FINISHED                                                                                              docker:desktop-linux
+ => [internal] load build definition from DockerfileMSB                                                                          0.0s
+ => => transferring dockerfile: 1.21kB                                                                                           0.0s
+ => [internal] load metadata for docker.io/openliberty/open-liberty:kernel-slim-java11-openj9-ubi-minimal                        0.0s
+ => [internal] load metadata for docker.io/library/maven:3.9.11-eclipse-temurin-11                                               0.4s
+ => [internal] load .dockerignore                                                                                                0.0s
+ => => transferring context: 2B                                                                                                  0.0s
+ => CACHED [build-java-stage 1/6] FROM docker.io/library/maven:3.9.11-eclipse-temurin-11@sha256:c83c4bc77fd7217445c66f5da8fdf8ec 0.0s
+ => => resolve docker.io/library/maven:3.9.11-eclipse-temurin-11@sha256:c83c4bc77fd7217445c66f5da8fdf8ec4cfeaa2e3e0d8acb65a4b2b7 0.0s
+ => CACHED [stage-1 1/5] FROM docker.io/openliberty/open-liberty:kernel-slim-java11-openj9-ubi-minimal@sha256:7ce09d7f1e0ed03c3  0.0s
+ => => resolve docker.io/openliberty/open-liberty:kernel-slim-java11-openj9-ubi-minimal@sha256:7ce09d7f1e0ed03c3d9cc3570e9e55df  0.0s
+ => [internal] load build context                                                                                                0.0s
+ => => transferring context: 4.43kB                                                                                              0.0s
+ => [build-java-stage 2/6] ADD pom.xml /work/pom.xml                                                                             0.0s
+ => [build-java-stage 3/6] WORKDIR /work                                                                                         0.0s
+ => [build-java-stage 4/6] RUN ["mvn", "dependency:go-offline"]                                                                 18.8s
+ => [build-java-stage 5/6] ADD [src, /work/src]                                                                                  0.0s
+ => [build-java-stage 6/6] RUN ["mvn", "package"]                                                                                1.2s
+ => [stage-1 2/5] COPY --chown=1001:0 --from=build-java-stage /work/src/main/liberty/config/server.xml /config/server.xml        0.0s
+ => [stage-1 3/5] COPY --chown=1001:0 --from=build-java-stage /work/target/helloworldrestmicroservice.war /config/apps/          0.0s
+ => [stage-1 4/5] RUN features.sh                                                                                                7.3s
+ => [stage-1 5/5] RUN configure.sh                                                                                               7.1s
+ => exporting to image                                                                                                           0.7s
+ => => exporting layers                                                                                                          0.5s
+ => => exporting manifest sha256:c8abe5568bc50407abb34755d4edb753ff9710bcf1e7f6be9a2f25edae611c91                                0.0s
+ => => exporting config sha256:f6a360b4df6bd8ef809f28a3c470d09d3741abee53ee1fd01e3dd4eee92ee3ac                                  0.0s
+ => => exporting attestation manifest sha256:dec79cd7cab8c1fcd447be4f22136099fa71f39564895af23e0778bb88d208cc                    0.0s
+ => => exporting manifest list sha256:04ed03073f40bc910a1e094a1b155f6b5f12fec2cb1dd7aa066164333b7defbc                           0.0s
+ => => naming to docker.io/mickaelbaron/helloworldrestmicroservice:msb                                                           0.0s
+ => => unpacking to docker.io/mickaelbaron/helloworldrestmicroservice:msb                                                        0.2s
 ```
 
 - S'assurer que l'image a été correctement construite en exécutant la ligne de commande suivante.

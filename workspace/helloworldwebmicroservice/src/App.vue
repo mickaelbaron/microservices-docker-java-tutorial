@@ -5,7 +5,7 @@ import SendMessage from './components/SendMessage.vue'
 import ListMessages from './components/ListMessages.vue'
 
 const messages = ref([])
-const restHostUrl = 'http://localhost:8080/helloworld'
+const restHostUrl = 'http://localhost:9080/helloworld'
 
 function updateMessages() {
   let request = new Request(restHostUrl, {
