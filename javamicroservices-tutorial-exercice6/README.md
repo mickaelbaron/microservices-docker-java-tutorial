@@ -99,7 +99,7 @@ La sortie console attendue :
 
 ```yaml
 # Build env
-FROM maven:3-jdk-11-slim AS build-java-stage
+FROM maven:3.9.11-eclipse-temurin-11 AS build-java-stage
 LABEL MAINTAINER="Mickael BARON"
 
 COPY pom.xml /work/pom.xml
@@ -110,7 +110,7 @@ COPY src /work/src
 RUN ["mvn", "package"]
 
 # Run env
-FROM openjdk:11-jre-slim
+FROM eclipse-temurin:25-jre-alpine
 COPY --from=build-java-stage /work/target/classes /classes/
 COPY --from=build-java-stage /work/target/dependency/*.jar /dependency/
 
@@ -127,35 +127,29 @@ docker build -t mickaelbaron/helloworldlogmicroservice .
 La sortie console attendue :
 
 ```bash
-[+] Building 83.2s (15/15) FINISHED                                          docker:desktop-linux
- => [internal] load build definition from Dockerfile                                         0.0s
- => => transferring dockerfile: 609B                                                         0.0s
- => [internal] load metadata for docker.io/library/openjdk:11-jre-slim                       1.3s
- => [internal] load metadata for docker.io/library/maven:3-jdk-11-slim                       1.3s
- => [internal] load .dockerignore                                                            0.0s
- => => transferring context: 2B                                                              0.0s
- => CACHED [build-java-stage 1/6] FROM docker.io/library/maven:3-jdk-11-slim@sha256:...      0.0s
- => => resolve docker.io/library/maven:3-jdk-11-slim@sha256:...                              0.0s
- => CACHED [stage-1 1/3] FROM docker.io/library/openjdk:11-jre-slim@sha256:...               0.0s
- => => resolve docker.io/library/openjdk:11-jre-slim@sha256:...                              0.0s
- => [internal] load build context                                                            0.0s
- => => transferring context: 1.02kB                                                          0.0s
- => [build-java-stage 2/6] ADD pom.xml /work/pom.xml                                         0.0s
- => [build-java-stage 3/6] WORKDIR /work                                                     0.0s
- => [build-java-stage 4/6] RUN ["mvn", "dependency:go-offline"]                             80.6s
- => [build-java-stage 5/6] ADD [src, /work/src]                                              0.0s
- => [build-java-stage 6/6] RUN ["mvn", "package"]                                            1.1s
- => [stage-1 2/3] COPY --from=build-java-stage /work/target/classes /classes/                0.0s
- => [stage-1 3/3] COPY --from=build-java-stage /work/target/dependency/*.jar /dependency/    0.0s
- => exporting to image                                                                       0.1s
- => => exporting layers                                                                      0.0s
- => => exporting manifest sha256:...                                                         0.0s
- => => exporting config sha256:...                                                           0.0s
- => => exporting attestation manifest sha256:...                                             0.0s
- => => exporting manifest list sha256:...                                                    0.0s
- => => naming to docker.io/mickaelbaron/helloworldlogmicroservice:latest                     0.0s
- => => unpacking to docker.io/mickaelbaron/helloworldlogmicroservice:latest                  0.0s
- ```
+[+] Building 83.4s (15/15) FINISHED
+ => [internal] load build definition from Dockerfile                                  0.0s
+ => [internal] load metadata for eclipse-temurin:25-jre-alpine                        0.3s
+ => [internal] load metadata for maven:3.9.11-eclipse-temurin-11                      0.3s
+ => [internal] load .dockerignore                                                     0.0s
+ => [build 1/6] FROM maven:3.9.11-eclipse-temurin-11@sha256:c095e24…                  0.0s
+ => [stage-1 1/3] FROM eclipse-temurin:25-jre-alpine@sha256:b51543f…                  0.0s
+ => [internal] load build context                                                     0.0s
+ => CACHED [build 2/6] COPY pom.xml /work/pom.xml                                     0.0s
+ => CACHED [build 3/6] WORKDIR /work                                                  0.0s
+ => CACHED [build 4/6] RUN mvn dependency:go-offline                                 80.0s
+ => CACHED [build 5/6] COPY src /work/src                                             0.0s
+ => CACHED [build 6/6] RUN mvn package                                                0.0s
+ => CACHED [stage-1 2/3] COPY --from=build /work/target/classes /classes/             0.0s
+ => CACHED [stage-1 3/3] COPY --from=build /work/target/dependency/*.jar /dependency/ 0.0s
+ => exporting to image                                                                0.0s
+ => => manifest sha256:e8d9ebf…                                                       0.0s
+ => => config sha256:2dd352d…                                                         0.0s
+ => => attestation sha256:6e8fbc0…                                                    0.0s
+ => => manifest list sha256:a6874a5…                                                  0.0s
+ => => naming to mickaelbaron/helloworldlogmicroservice:latest                        0.0s
+ => => unpacking to mickaelbaron/helloworldlogmicroservice:latest                     0.0s
+```
 
 - La mise en place du serveur [RabbitMQ](https://www.rabbitmq.com/) est obligatoire pour poursuivre. Il sera installé dans un conteneur isolé. Le microservice correspondant portera le nom **Rabbitmq**. L’image utilisée (`rabbitmq:management`) inclut une interface web permettant de gérer les événements reçus et envoyés.
 

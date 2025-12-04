@@ -1,5 +1,5 @@
 # Build env
-FROM maven:3-jdk-11-slim AS build-java-stage
+FROM maven:3.9.11-eclipse-temurin-11 AS build-java-stage
 LABEL MAINTAINER="Mickael BARON"
 
 COPY pom.xml /work/pom.xml
@@ -10,7 +10,7 @@ COPY src /work/src
 RUN ["mvn", "package"]
 
 # Run env
-FROM openjdk:11-jre-slim
+FROM eclipse-temurin:25-jre-alpine
 COPY --from=build-java-stage /work/target/classes /classes/
 COPY --from=build-java-stage /work/target/dependency/*.jar /dependency/
 

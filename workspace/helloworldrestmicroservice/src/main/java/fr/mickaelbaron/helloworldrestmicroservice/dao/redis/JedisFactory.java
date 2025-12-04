@@ -22,13 +22,8 @@ public class JedisFactory {
 	private JedisPool jedisPool;
 
 	@Inject
-	@ConfigProperty(name = REDIS_HOST_ENV)
-	private String redisHost;
-
-	// public JedisFactory() {
-	// URI redisURI = getRedisURI();
-	// jedisPool = new JedisPool(new JedisPoolConfig(), redisURI);
-	// }
+    @ConfigProperty(name = REDIS_HOST_ENV, defaultValue = "tcp://localhost:6379")
+    private String redisHost;
 
 	@PostConstruct
 	public void init() {
@@ -40,8 +35,7 @@ public class JedisFactory {
 		return jedisPool.getResource();
 	}
 
-	private URI getRedisURI() {
-		// String redisHost = System.getenv(REDIS_HOST_ENV);
-		return URI.create(redisHost != null && !redisHost.isEmpty() ? redisHost : "tcp://localhost:6379");
-	}
+    private URI getRedisURI() {
+        return URI.create(redisHost);
+    }
 }

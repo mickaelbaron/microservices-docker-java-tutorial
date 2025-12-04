@@ -30,7 +30,7 @@ public class RabbitMQFactory {
 	private Channel currentChanel;
 
 	@Inject
-	@ConfigProperty(name = RABBITMQ_HOST_ENV)
+	@ConfigProperty(name = RABBITMQ_HOST_ENV, defaultValue = "amqp://localhost:5672")
 	private String rabbitmqHost;
 
 	@PostConstruct
@@ -53,8 +53,6 @@ public class RabbitMQFactory {
 	}
 
 	private URI getRedisURI() {
-		String hostValue = rabbitmqHost != null && !rabbitmqHost.isEmpty() ? rabbitmqHost
-				: "amqp://localhost:5672";
-		return URI.create(hostValue);
+		return URI.create(rabbitmqHost);
 	}
 }

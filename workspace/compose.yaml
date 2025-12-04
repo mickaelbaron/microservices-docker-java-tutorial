@@ -4,11 +4,6 @@ services:
     command: redis-server --appendonly yes
     volumes: 
       - ./data:/data
-    healthcheck:
-      test: ["CMD", "redis-cli","ping"]
-      interval: 3s
-      timeout: 5s
-      retries: 3
     networks:
       - helloworldnet
 
@@ -16,15 +11,11 @@ services:
     image: rabbitmq:management
     hostname: my-rabbit
     ports:
+      - 5672:5672
       - 15672:15672
-    healthcheck:
-      test: ["CMD", "rabbitmq-diagnostics","-q", "ping"]
-      interval: 5s
-      timeout: 5s
-      retries: 3
     networks:
       - helloworldnet
- 
+
   rest:
     build:
       context: helloworldrestmicroservice/

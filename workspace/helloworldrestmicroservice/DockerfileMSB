@@ -1,5 +1,5 @@
 # Build env
-FROM maven:3.9.9-eclipse-temurin-11 AS build-java-stage
+FROM maven:3.9.11-eclipse-temurin-11 AS build-java-stage
 
 ADD pom.xml /work/pom.xml
 WORKDIR /work

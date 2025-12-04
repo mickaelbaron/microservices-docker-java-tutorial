@@ -44,7 +44,7 @@ docker network rm helloworldnetwork
 
 Nous allons également introduire un nouveau microservice qui se chargera de fournir une interface web à notre application : le microservice **Web**. Le code de cette application est dans le projet _helloworldwebmicroservice_. Le contenu du code est réalisé en HTML et [Vue.js](https://vuejs.org/). Les dépendances des bibliothèques JavaScript sont gérées par l'outil [Vite](https://vitejs.dev/).
 
-- Parcourir les fichiers contenus dans le projet _helloworldwebmicroservice_. Vous remarquerez dans le fichier _App.vue_ l'URL du microservice **Rest**. Dans notre cas il s'agit de l'URL <http://localhost:8080/helloworld>.
+- Parcourir les fichiers contenus dans le projet _helloworldwebmicroservice_. Vous remarquerez dans le fichier _App.vue_ l'URL du microservice **Rest**. Dans notre cas il s'agit de l'URL <http://localhost:9080/helloworld>.
 
 - Créer un fichier _compose.yaml_ à la racine du répertoire _workspace_.
 
@@ -78,7 +78,7 @@ services:
       - rabbitmq
       - redis
     ports:
-      - 8080:8080
+      - 9080:9080
     environment:
       REDIS_HOST: tcp://redis:6379
       RABBITMQ_HOST: amqp://rabbitmq:5672
@@ -257,17 +257,13 @@ public class HelloWorldLogMicroservice {
 
     ...
 
-    public HelloWorldLogMicroservice(String rabbitMQHosts) throws IOException, TimeoutException, InterruptedException {
+    public HelloWorldLogMicroservice(String rabbitMQUri) {
 		    try {
-			    factory.setUri(rabbitMQHosts);
-		    } catch (KeyManagementException | NoSuchAlgorithmException | URISyntaxException e) {
-			    System.out.println("❌ Failed to configure RabbitMQ connection: invalid URI.");
-			    e.printStackTrace(); 
-			    System.exit(-1);
-		    }
+			    ConnectionFactory factory = new ConnectionFactory();
+			    factory.setUri(rabbitMQUri);
 
-		    // final Connection connection = factory.newConnection();
-		    Connection connection = createConnection(factory); 
+			    Connection connection = createConnection(factory);
+		      // Connection connection = createConnection(factory); 
         ...
     }
 
@@ -359,7 +355,7 @@ NAME                   COMMAND                  SERVICE             STATUS      
 workspace-log-1        "java -cp classes:de…"   log                 running
 workspace-rabbitmq-1   "docker-entrypoint.s…"   rabbitmq            running (healthy)   0.0.0.0:5672->5672/tcp, 0.0.0.0:15672->15672/tcp
 workspace-redis-1      "docker-entrypoint.s…"   redis               running (healthy)   6379/tcp
-workspace-rest-1       "java -cp classes:de…"   rest                running             0.0.0.0:8080->8080/tcp
+workspace-rest-1       "java -cp classes:de…"   rest                running             0.0.0.0:9080->9080/tcp
 workspace-web-1        "/docker-entrypoint.…"   web                 running             0.0.0.0:80->80/tcp
 ```
 
@@ -450,7 +446,6 @@ La sortie console attendue :
  ```
 
 Lors de la création des conteneurs les conteneurs `workspace-rest-1` et `workspace-log-1` sont mis en attente tant que `workspace-rabbitmq-1` et, pour `workspace-rest-1`, `workspace-redis-1` soient dans l'état `Healthy`.
-
 
 - Il ne nous reste plus qu'à tester. Ouvrir un navigateur et rendez-vous à cette adresse : <http://localhost>.
 
